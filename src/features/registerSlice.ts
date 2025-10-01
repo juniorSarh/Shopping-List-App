@@ -1,4 +1,3 @@
-// src/features/register/registerSlice.ts
 import { createSlice, createAsyncThunk,  } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
@@ -69,7 +68,6 @@ const registerSlice = createSlice({
   name: "register",
   initialState,
   reducers: {
-    // ⬇️ No generic; all fields are strings. TS now infers `state` from initialState.
     updateField: (
       state,
       action: PayloadAction<{ field: keyof RegisterForm; value: string }>

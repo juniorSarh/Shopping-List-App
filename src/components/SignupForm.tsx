@@ -1,4 +1,5 @@
 import type { FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateField,
@@ -18,10 +19,19 @@ export default function RegisterForm() {
   const error = useSelector(selectRegisterError);
   const success = useSelector(selectRegisterSuccess);
 
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    dispatch(submitRegistration(form));
-  };
+  
+
+  const navigate = useNavigate();
+  const onSubmit = async (e: FormEvent) => {
+      e.preventDefault();
+      try {
+        
+        await dispatch(submitRegistration(form)).unwrap();
+        navigate("/dashboard");
+      } catch {
+        console.log("Could not find landing page")
+      }
+    };
 
   return (
     <form onSubmit={onSubmit} style={{ maxWidth: 420 }}>
