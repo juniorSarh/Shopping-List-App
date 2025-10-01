@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "id": "121e",
+      "email": "sabelohgumede@gmail.com",
+      "password": "sabelo1",
+      "name": "Sabelo",
+      "surname": "Gumede",
+      "cellNumber": "+275654125"
+    },
+    {
+      "id": "57e5",
+      "email": "zack@gmail.com",
+      "password": "zack11",
+      "name": "zack",
+      "surname": "Khoza",
+      "cellNumber": "+27546895"
+    }
+  ]
+}
