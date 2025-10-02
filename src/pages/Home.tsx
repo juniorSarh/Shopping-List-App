@@ -1,22 +1,31 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+import Navbar from '../components/NavBar';
+import Footer from '../components/Footer';
+import styles from "../modules.css/home.module.css";
 
 
 export default function Home() {
   return (
-    <div>
-      <h1>Home Page</h1>
-      <p>Welcome to the Home page.</p>
-      <p>Please sign up or log in to continue.</p>
-      <button>
-        {" "}
-        <Link to="/signup">sign Up</Link>
-      </button>
+    <div className={styles.wrapper}>
+      <Navbar />
 
-      <button>
-        {" "}
-        <Link to="/login">Log In</Link>
-      </button>
+      <main className={styles.main}>
+        <h1 className={styles.title}>Home Page</h1>
+        <p className={styles.lead}>Welcome to the Home page.</p>
+        <p className={styles.copy}>Please sign up or log in to continue.</p>
+
+        <div className={styles.actions}>
+          <Link to="/signup" className={`${styles.btn} ${styles.btnPrimary}`}>
+            Sign Up
+          </Link>
+          <Link to="/login" className={`${styles.btn} ${styles.btnGhost}`}>
+            Log In
+          </Link>
+        </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }

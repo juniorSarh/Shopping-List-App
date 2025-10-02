@@ -1,0 +1,81 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  /* z-index: 50; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #0f172a;           /* slate-900 */
+  color: #e5e7eb;                 /* gray-200 */
+  border-top: 1px solid #1f2937;
+  width: 100%;
+  padding: 2px;
+  margin: 2px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #111827;
+}
+
+.logo {
+  width: 28px;
+  height: 28px;
+ 
+}
+
+
+.appName {
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.link,
+.linkActive {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #374151;
+  transition: background 140ms ease, color 140ms ease, transform 70ms ease;
+}
+
+.link:hover {
+  background: #f3f4f6;
+}
+
+.linkActive {
+  color: #111827;
+  background: #eef2ff;          /* subtle active bg */
+  outline: 2px solid #c7d2fe;    /* focus ring style */
+}
+
+@media (max-width: 560px) {
+  .appName {
+    font-size: 1rem;
+  }
+  .links {
+    gap: 6px;
+  }
+  .link, .linkActive {
+    padding: 0 10px;
+    height: 34px;
+    font-size: 0.9rem;
+  }
+}

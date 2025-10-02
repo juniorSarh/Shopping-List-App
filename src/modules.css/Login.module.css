@@ -2,7 +2,7 @@
 
 .form {
   width: 100%;
-  max-width: 420px;
+  max-width: 720px;
   margin: 0 auto;
   padding: 24px;
   border-radius: 16px;
@@ -17,6 +17,8 @@
   line-height: 1.2;
   font-weight: 700;
   color: #111827;
+  display: flex;
+  justify-content: center;
 }
 
 .field {

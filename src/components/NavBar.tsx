@@ -1,9 +1,46 @@
-import React from 'react'
+import { NavLink } from "react-router-dom";
+import styles from "../modules.css/NavBar.module.css";
+import appIcon from "../images/shopping-cart.png";
 
-export default function NavBar() {
+type NavbarProps = {
+  appName?: string;
+};
+
+export default function Navbar({ appName = "Shopping List App" }: NavbarProps) {
   return (
-    <div>
-      
-    </div>
-  )
+    <header className={styles.navbar}>
+      <NavLink to="/" className={styles.brand} aria-label={`${appName} home`}>
+        {/* Inline SVG icon (no asset pipeline needed) */}
+       {/* <img src={appIcon} alt="logo" className={styles.logo}/> */}
+        <span className={styles.appName}>{appName}</span>
+      </NavLink>
+
+      <nav className={styles.links}>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? styles.linkActive : styles.link
+          }
+        >
+          Home
+        </NavLink>
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            isActive ? styles.linkActive : styles.link
+          }
+        >
+          Login
+        </NavLink>
+        <NavLink
+          to="/signup"
+          className={({ isActive }) =>
+            isActive ? styles.linkActive : styles.link
+          }
+        >
+          Sign Up
+        </NavLink>
+      </nav>
+    </header>
+  );
 }

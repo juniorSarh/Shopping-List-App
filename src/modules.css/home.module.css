@@ -1,0 +1,76 @@
+.wrapper {
+  min-height: calc(100dvh - 120px); /* leaves room for navbar/footer */
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: #f8fafc;
+}
+
+.main {
+  width: 100%;
+  margin: 2px;
+  padding: 2px;
+  height: 70vh;
+  background-color: white;
+}
+
+.title {
+  margin: 16px 0 8px;
+  font-size: clamp(1.6rem, 1.2rem + 2vw, 2.2rem);
+  line-height: 1.15;
+  font-weight: 900;
+  letter-spacing: -0.2px;
+  color: #111827;
+}
+
+.lead,
+.copy {
+  margin: 0 0 10px 0;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+/* Button-like links */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 80ms ease, filter 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btnPrimary {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.btnPrimary:hover {
+  filter: brightness(1.03);
+  background: #1d4ed8;
+}
+
+.btnGhost {
+  background: transparent;
+  color: #111827;
+  border-color: #e5e7eb;
+}
+
+.btnGhost:hover {
+  background: rgba(0,0,0,0.03);
+}
