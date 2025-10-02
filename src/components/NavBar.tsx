@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import styles from "../modules.css/NavBar.module.css";
-import appIcon from "../images/shopping-cart.png";
+
 
 type NavbarProps = {
   appName?: string;
