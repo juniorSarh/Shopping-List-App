@@ -1,5 +1,6 @@
 import type { FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import styles from "../modules.css/SignUp.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateField,
@@ -34,36 +35,13 @@ export default function RegisterForm() {
     };
 
   return (
-    <form onSubmit={onSubmit} style={{ maxWidth: 420 }}>
-      <h2>Register</h2>
+    <form onSubmit={onSubmit} className={styles.form}>
+      <h2 className={styles.heading}>Register</h2>
 
-      <label style={label}>
-        Email
+      <label className={styles.field}>
+        <span className={styles.label}>Name</span>
         <input
-          type="email"
-          value={form.email}
-          onChange={(e) =>
-            dispatch(updateField({ field: "email", value: e.target.value }))
-          }
-          required
-        />
-      </label>
-
-      <label style={label}>
-        Password
-        <input
-          type="password"
-          value={form.password}
-          onChange={(e) =>
-            dispatch(updateField({ field: "password", value: e.target.value }))
-          }
-          required
-        />
-      </label>
-
-      <label style={label}>
-        Name
-        <input
+          className={styles.input}
           value={form.name}
           onChange={(e) =>
             dispatch(updateField({ field: "name", value: e.target.value }))
@@ -72,9 +50,10 @@ export default function RegisterForm() {
         />
       </label>
 
-      <label style={label}>
-        Surname
+      <label className={styles.field}>
+        <span className={styles.label}>Surname</span>
         <input
+          className={styles.input}
           value={form.surname}
           onChange={(e) =>
             dispatch(updateField({ field: "surname", value: e.target.value }))
@@ -83,9 +62,10 @@ export default function RegisterForm() {
         />
       </label>
 
-      <label style={label}>
-        Cell number
+      <label className={styles.field}>
+        <span className={styles.label}>Cell number</span>
         <input
+          className={styles.input}
           value={form.cellNumber}
           onChange={(e) =>
             dispatch(
@@ -97,15 +77,50 @@ export default function RegisterForm() {
         />
       </label>
 
-      <button type="submit" disabled={loading}>
-        {loading ? "Registering…" : "Register"}
-      </button>
+      <label className={styles.field}>
+        <span className={styles.label}>Email</span>
+        <input
+          className={styles.input}
+          type="email"
+          value={form.email}
+          onChange={(e) =>
+            dispatch(updateField({ field: "email", value: e.target.value }))
+          }
+          required
+        />
+      </label>
 
-      {error && <p style={{ color: "crimson" }}>{error}</p>}
+      <label className={styles.field}>
+        <span className={styles.label}>Password</span>
+        <input
+          className={styles.input}
+          type="password"
+          value={form.password}
+          onChange={(e) =>
+            dispatch(updateField({ field: "password", value: e.target.value }))
+          }
+          required
+        />
+
+        <p> Already have account? <Link to="/login">LogIn</Link> here</p>
+      </label>
+
+      <div className={styles.actions}>
+        <button className={styles.button} type="submit" disabled={loading}>
+          {loading ? "Registering…" : "Register"}
+        </button>
+      </div>
+
+      {error && <p className={styles.error}>{error}</p>}
+
       {success && (
-        <p style={{ color: "green" }}>
+        <p className={styles.success}>
           Registered!{" "}
-          <button type="button" onClick={() => dispatch(resetForm())}>
+          <button
+            type="button"
+            className={styles.inlineButton}
+            onClick={() => dispatch(resetForm())}
+          >
             Add another
           </button>
         </p>
@@ -113,9 +128,3 @@ export default function RegisterForm() {
     </form>
   );
 }
-
-const label: React.CSSProperties = {
-  display: "grid",
-  gap: 6,
-  marginBottom: 10,
-};

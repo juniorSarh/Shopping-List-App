@@ -1,35 +1,11 @@
 {
   "users": [
     {
-      "id": "121e",
+      "id": "f500",
       "email": "sabelohgumede@gmail.com",
-      "password": "sabelo1",
+      "password": "12345",
       "name": "Sabelo",
       "surname": "Gumede",
-      "cellNumber": "+275654125"
-    },
-    {
-      "id": "57e5",
-      "email": "zack@gmail.com",
-      "password": "zack11",
-      "name": "zack",
-      "surname": "Khoza",
-      "cellNumber": "+27546895"
-    },
-    {
-      "id": "613a",
-      "email": "sne@gmail.com",
-      "password": "sawer",
-      "name": "sne",
-      "surname": "Khoza",
-      "cellNumber": "2458899654"
-    },
-    {
-      "id": "625e",
-      "email": "nb@gmail.com",
-      "password": "qwert",
-      "name": "lol",
-      "surname": "lo",
       "cellNumber": "123456"
     }
   ],

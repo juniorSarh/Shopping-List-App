@@ -1,7 +1,8 @@
 
 import type { FormEvent } from "react";
+import styles from "../modules.css/Login.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   updateField,
   submitLogin,
@@ -31,12 +32,13 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={onSubmit} style={{ maxWidth: 420 }}>
-      <h2>Login</h2>
+    <form onSubmit={onSubmit} className={styles.form}>
+      <h2 className={styles.heading}>Login</h2>
 
-      <label style={label}>
-        Email
+      <label className={styles.field}>
+        <span className={styles.label}>Email</span>
         <input
+          className={styles.input}
           type="email"
           value={form.email}
           onChange={(e) =>
@@ -46,9 +48,10 @@ export default function LoginForm() {
         />
       </label>
 
-      <label style={label}>
-        Password
+      <label className={styles.field}>
+        <span className={styles.label}>Password</span>
         <input
+          className={styles.input}
           type="password"
           value={form.password}
           onChange={(e) =>
@@ -58,17 +61,20 @@ export default function LoginForm() {
         />
       </label>
 
-      <button type="submit" disabled={loading}>
-        {loading ? "Logging in…" : "Login"}
-      </button>
+      <p>
+        {" "}
+        Don`t have account? <Link to="/signup">SignUp</Link> here
+      </p>
 
-      {error && <p style={{ color: "crimson" }}>{error}</p>}
+      <div className={styles.actions}>
+        <button className={styles.button} type="submit" disabled={loading}>
+          {loading ? "Logging in…" : "Login"}
+        </button>
+      </div>
+
+      {error && <p className={styles.error}>{error}</p>}
     </form>
   );
-}
 
-const label: React.CSSProperties = {
-  display: "grid",
-  gap: 6,
-  marginBottom: 10,
+
 };
