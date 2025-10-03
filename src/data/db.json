@@ -1,12 +1,12 @@
 {
   "users": [
     {
-      "id": "f500",
+      "id": "52a0",
       "email": "sabelohgumede@gmail.com",
-      "password": "12345",
       "name": "Sabelo",
       "surname": "Gumede",
-      "cellNumber": "123456"
+      "cellNumber": "12345",
+      "passwordHash": "$2b$12$NHek.aAR3iSgakvRI2uGD.LL2UxOAW5tQMyNJIO9w5GATUMTQWu/m"
     }
   ],
   "items": []
