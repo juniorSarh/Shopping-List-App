@@ -142,4 +142,5 @@ export const selectLoginForm = (s: RootState) => s.login.form;
 export const selectLoginLoading = (s: RootState) => s.login.loading;
 export const selectLoginError = (s: RootState) => s.login.error;
 export const selectLoginSuccess = (s: RootState) => s.login.success;
+export const selectCurrentUser = (s: RootState) => s.login.currentUser;
 export default slice.reducer;

@@ -1,18 +1,17 @@
 .navbar {
   position: sticky;
   top: 0;
-  /* z-index: 50; */
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  border-bottom: 1px solid #e5e7eb;
-  background: #0f172a;           /* slate-900 */
+  background: #0d1d45;           /* slate-900 */
   color: #e5e7eb;                 /* gray-200 */
-  border-top: 1px solid #1f2937;
   width: 100%;
   padding: 2px;
   margin: 2px;
+  height: 80px;
 }
 
 .brand {
@@ -20,26 +19,31 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  color: #111827;
+  color: #f1f2f3;
+  font-size: xx-large;
+  margin-left: 50px;
 }
 
 .logo {
   width: 28px;
   height: 28px;
- 
+ color: white;
 }
 
 
 .appName {
   font-size: 1.125rem;
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: 0.2px;
+  padding: 5px;
 }
 
 .links {
   display: flex;
   align-items: center;
   gap: 12px;
+  background: transparent;
+  color: #e5e7eb;
 }
 
 .link,
@@ -48,11 +52,11 @@
   align-items: center;
   height: 36px;
   padding: 0 12px;
-  border-radius: 10px;
+  border-radius: white 10px ;
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
-  color: #374151;
+  color: #bcc2cd;
   transition: background 140ms ease, color 140ms ease, transform 70ms ease;
 }
 
