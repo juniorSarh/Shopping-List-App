@@ -1,4 +1,4 @@
-// src/pages/Profile.tsx
+
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../store";
@@ -11,7 +11,7 @@ import {
 import { selectCurrentUser } from "../features/loginSlice";
 import styles from "../modules.css/profilecard.module.css";
 import Footer from "../components/Footer";
-import Navbar from "../components/NavBar";
+import Header from "../components/Header";
 
 export default function ProfilePage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -114,8 +114,8 @@ export default function ProfilePage() {
   if (!user) return null;
 
   return (
-    <>
-    <Navbar />
+    <div style={{backgroundColor:'lightgrey'}} >
+    <Header />
       <div className={styles.card}>
         {/* Header */}
         <div className={styles.header}>
@@ -286,6 +286,6 @@ export default function ProfilePage() {
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 }

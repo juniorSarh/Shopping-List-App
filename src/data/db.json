@@ -7,6 +7,14 @@
       "surname": "Gumede",
       "cellNumber": "0722950140",
       "passwordHash": "$2b$12$sugyVWUivhYz8098hXNqwuBOh.ggaufnPjTzdkCYJ3iT8R11Xnfp2"
+    },
+    {
+      "id": "a97a",
+      "email": "sa@m",
+      "name": "mn",
+      "surname": "vv",
+      "cellNumber": "12",
+      "passwordHash": "$2b$12$etLT96M8V5MkXkJ69dxVUuJdIgwsnH7Wex.8PGevx0gpzmrVyCFZ."
     }
   ],
   "items": []

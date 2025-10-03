@@ -6,7 +6,7 @@
   --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   --border: 1px solid rgba(0, 0, 0, 0.08);
   --bg: #ffffff;
-  --fg: #0f172a;
+  --fg: #1d45a0;
   --muted: #64748b;
   --accent: #2563eb;
   --surface: #f8fafc;
@@ -23,7 +23,7 @@
 
 @media (prefers-color-scheme: dark) {
   .card {
-    --bg: #0b1020;
+    --bg: #162555;
     --fg: #e5e7eb;
     --muted: #a1a1aa;
     --border: 1px solid rgba(255, 255, 255, 0.08);

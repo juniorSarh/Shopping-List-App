@@ -1,16 +1,16 @@
-import React from 'react'
 import Footer from '../components/Footer'
-import Navbar from '../components/NavBar'
-import { Link } from 'react-router-dom'
+
+import Header from '../components/Header'
 
 export default function Dashboard() {
   return (
     <div>
-    <Navbar />
-    <Link to="/profile">View Profile</Link>
-      <h1>Dashboard Page</h1>
-      <p>This is the Dashboard page.</p>
+      <Header />
+      <div style={{ height: "650px" , textAlign: "center", paddingTop: "150px" }}>
+        <h1>Dashboard Page</h1>
+        <p>This is the Dashboard page.</p>
+      </div>
       <Footer />
     </div>
-  )
+  );
 }
