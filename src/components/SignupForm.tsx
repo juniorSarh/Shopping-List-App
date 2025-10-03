@@ -36,7 +36,7 @@ export default function RegisterForm() {
 
   return (
     <form onSubmit={onSubmit} className={styles.form}>
-      <h2 className={styles.heading}>Register</h2>
+      <h2 className={styles.heading}>Create an Account</h2>
 
       <label className={styles.field}>
         <span className={styles.label}>Name</span>

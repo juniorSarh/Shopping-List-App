@@ -15,6 +15,30 @@
       "surname": "vv",
       "cellNumber": "12",
       "passwordHash": "$2b$12$etLT96M8V5MkXkJ69dxVUuJdIgwsnH7Wex.8PGevx0gpzmrVyCFZ."
+    },
+    {
+      "id": "eff1",
+      "email": "sha@gmail.com",
+      "name": "Shantela",
+      "surname": "Noyila",
+      "cellNumber": "0897654321",
+      "passwordHash": "$2b$12$35uO56HKmPGEPD8mf/FBPuL0NXNVx8F.o2/k2ZIGqeoEzXL4P234m"
+    },
+    {
+      "id": "1a51",
+      "email": "namelast@mail.com",
+      "name": "Name",
+      "surname": "Name",
+      "cellNumber": "1111111111",
+      "passwordHash": "$2b$12$aKVIEfKEFn4HelFLkxIVm.amtDDFMmARan0/E.k.t61Q/hzSRD68K"
+    },
+    {
+      "id": "7268",
+      "email": "w@q",
+      "name": "q",
+      "surname": "w",
+      "cellNumber": "123",
+      "passwordHash": "$2b$12$bsh/NvZdhNzIFD/hEwIvPOgbrUersUY1uFEJzC5GtqpDH9HHOgl1O"
     }
   ],
   "items": []

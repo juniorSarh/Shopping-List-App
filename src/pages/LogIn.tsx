@@ -6,8 +6,6 @@ export default function Login() {
   return (
     <div>
       <Navbar />
-      <h1>LogIn Page</h1>
-      <p>This is the LogIn page.</p>
       <LoginForm />
       <Footer />
     </div>
