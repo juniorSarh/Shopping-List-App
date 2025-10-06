@@ -6,7 +6,7 @@ import styles from "../modules.css/header.module.css";
 
 type HeaderProps = { appName?: string };
 
-export default function Header({ appName = "ShoEase" }: HeaderProps) {
+export default function Header({ appName = "ShopEase" }: HeaderProps) {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const user = useSelector(selectCurrentUser);

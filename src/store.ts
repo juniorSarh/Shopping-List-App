@@ -4,13 +4,15 @@ import { configureStore } from "@reduxjs/toolkit";
 import registerReducer from "./features/registerSlice";
 import loginReducer from "./features/loginSlice";
 import profileRecuder from "./features/profileSlice";
+import shoppingReducer from "./features/shoppingSlice";
 
 
 export const store = configureStore({
   reducer: { 
        register: registerReducer,
        login: loginReducer,
-       profile: profileRecuder
+       profile: profileRecuder,
+        shopping: shoppingReducer
    },
 });
 
