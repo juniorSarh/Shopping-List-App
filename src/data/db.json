@@ -39,7 +39,63 @@
       "surname": "w",
       "cellNumber": "123",
       "passwordHash": "$2b$12$bsh/NvZdhNzIFD/hEwIvPOgbrUersUY1uFEJzC5GtqpDH9HHOgl1O"
+    },
+    {
+      "id": "c45d",
+      "email": "swatson@gmail.com",
+      "name": "harry",
+      "surname": "swatson",
+      "cellNumber": "124578",
+      "passwordHash": "$2b$12$ixnOOBZOySd2kDY0Ao5RPeqFxzqU5t.LVn0xDNkquZo.zq3XtIQT2"
     }
   ],
-  "items": []
+  "ShoppingList": [
+    {
+      "id": "CiSOL-l6YYRimVl461eF2",
+      "userId": "",
+      "title": "weekend vibe",
+      "ShoppingItems": [
+        {
+          "id": "4WJjVdznbAlz0tdLbyiCv",
+          "name": "bread",
+          "quantity": 2,
+          "purchased": false,
+          "category": "bakery",
+          "notes": "for breakfast",
+          "images": [
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6ozOVUG7lZnZSGc3n6ATPNkMQY1zLsyIcFA&s"
+          ]
+        },
+        {
+          "id": "ThgksDSLunbFtMzsfBuRl",
+          "name": "eggs",
+          "quantity": 1,
+          "purchased": false,
+          "category": "diary",
+          "notes": "healthy",
+          "images": [
+            "https://cdn.britannica.com/94/151894-050-F72A5317/Brown-eggs.jpg"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fXObm_O9YIWWLR6jJ77-7",
+      "userId": "",
+      "title": "grocery",
+      "ShoppingItems": []
+    },
+    {
+      "id": "vZ33PPQI221Tk2PGj02YK",
+      "userId": "",
+      "title": "December",
+      "ShoppingItems": []
+    },
+    {
+      "id": "uJ2DU4Zpc7Tjw3WvXxQO3",
+      "userId": "",
+      "title": "Buying",
+      "ShoppingItems": []
+    }
+  ]
 }

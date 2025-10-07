@@ -1,0 +1,172 @@
+.detail {
+    max-width: 720px;
+  /* lives inside the card; keep margins compact */
+}
+
+.addGrid {
+  display: grid;
+  grid-template-columns: 2fr 110px 1fr;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.input,
+.metaInput {
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.input:focus,
+.metaInput:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.metaRow {
+  grid-column: 1 / span 3;
+}
+
+.btn {
+  padding: 10px 14px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.06s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btnPrimary {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+}
+
+.btnPrimary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loading,
+.empty {
+  color: #64748b;
+}
+
+.items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.itemRow {
+  display: grid;
+  grid-template-columns: 1fr 140px 160px 100px;
+  gap: 8px;
+  align-items: start;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  background: #fff;
+}
+
+.itemHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.itemName {
+  font-weight: 700;
+  color: #111827;
+}
+
+.purchased {
+  color: #64748b;
+  text-decoration: line-through;
+}
+
+.itemSub {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.thumbs {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.thumb {
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.qtyGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.qtyInput {
+  width: 64px;
+  text-align: center;
+}
+
+.badge {
+  color: #334155;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.btnDanger {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: #fff;
+}
+
+.editGrid {
+  display: grid;
+  gap: 6px;
+}
+
+@media (max-width: 720px) {
+  .addGrid {
+    grid-template-columns: 1fr;
+  }
+  .metaRow {
+    grid-column: auto;
+  }
+  .itemRow {
+    grid-template-columns: 1fr;
+  }
+  .actions {
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 520px) {
+  .createRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .createRow > * {
+    width: 100%;
+  }
+}

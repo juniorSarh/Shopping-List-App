@@ -7,7 +7,7 @@ export default function Dashboard() {
   return (
     <div>
       <Header />
-      <ShoppingLists />
+      <ShoppingLists userId="users{id}" />
       <Footer />
     </div>
   );
