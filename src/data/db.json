@@ -47,6 +47,14 @@
       "surname": "swatson",
       "cellNumber": "124578",
       "passwordHash": "$2b$12$ixnOOBZOySd2kDY0Ao5RPeqFxzqU5t.LVn0xDNkquZo.zq3XtIQT2"
+    },
+    {
+      "id": "927b",
+      "email": "sa@sa",
+      "name": "sa",
+      "surname": "sa",
+      "cellNumber": "123",
+      "passwordHash": "$2b$12$o4jGSkm2A9RT5GXpKuwc5uwQexKHGpsBQ0ThEfMRinpOoHgYQnpYi"
     }
   ],
   "ShoppingList": [
@@ -95,6 +103,27 @@
       "id": "uJ2DU4Zpc7Tjw3WvXxQO3",
       "userId": "",
       "title": "Buying",
+      "ShoppingItems": []
+    },
+    {
+      "id": "s687Nn0JKSZqduu92vopv",
+      "userId": "users{id}",
+      "title": "Royalty birthday",
+      "ShoppingItems": [
+        {
+          "id": "TNm5FpvgvD8nzwScsx-5W",
+          "name": "cake",
+          "quantity": 2,
+          "purchased": false,
+          "category": "Groceries",
+          "notes": "baking at free"
+        }
+      ]
+    },
+    {
+      "id": "4IfpPI9LqnD5p8AvE-XFX",
+      "userId": "users{id}",
+      "title": "sabelo",
       "ShoppingItems": []
     }
   ]
