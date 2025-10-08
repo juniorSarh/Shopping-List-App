@@ -133,3 +133,68 @@
     width: 100%;
   }
 }
+
+/* Tinted card + centered title to match your screenshot */
+.modalCardTint {
+  background: #d6e1e3; /* soft blue-grey */
+  border-radius: 16px;
+}
+
+.modalTitleCenter {
+  text-align: center;
+}
+
+/* Centered actions with pill buttons (green / red) */
+.modalActionsCenter {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.btnGreen {
+  background: #22a34a;
+  border-color: #22a34a;
+  color: #fff;
+  border-radius: 999px;
+  padding-inline: 18px;
+}
+
+.btnRed {
+  background: #b91c1c;
+  border-color: #b91c1c;
+  color: #fff;
+  border-radius: 999px;
+  padding-inline: 18px;
+}
+
+/* Layout for the header action with icon + label */
+.cardHeaderActions { display: flex; gap: 8px; }
+
+/* Items container divider */
+.cardBody { border-top: 1px solid #f1f5f9; padding-top: 10px; }
+
+/* Toggle button with chevron */
+.btnToggle { display: inline-flex; align-items: center; gap: 6px; }
+
+/* Chevron: rotates when expanded */
+.chev {
+  transition: transform 0.2s ease;
+  transform: rotate(0deg);
+  display: inline-block;
+}
+.btn[aria-expanded="true"] .chev {
+  transform: rotate(180deg);
+}
+
+/* Optional subtle pressed style when open */
+.btn[aria-expanded="true"] {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+/* Centered modal actions + pills (already added earlier, here for completeness) */
+.modalActionsCenter { display: flex; gap: 12px; justify-content: center; margin-top: 10px; }
+.btnGreen { background: #22a34a; border-color: #22a34a; color: #fff; border-radius: 999px; padding-inline: 18px; }
+.btnRed   { background: #b91c1c; border-color: #b91c1c; color: #fff; border-radius: 999px; padding-inline: 18px; }
+

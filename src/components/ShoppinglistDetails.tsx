@@ -4,7 +4,7 @@ import type { AppDispatch } from "../store";
 import styles from "../modules.css/shoppinglistdetails.module.css";
 import {
   addItemToList,
-  deleteListItem,
+  // deleteListItem, // (kept removed)
   selectItemsByListId,
   selectShoppingListById,
   selectShoppingStatus,
@@ -12,7 +12,7 @@ import {
   updateListItem,
 } from "../features/shoppingSlice";
 
-type Props = { listId: string | number };
+type Props = { listId: string | number; showItems?: boolean };
 
 const CATEGORIES = [
   "Groceries",
@@ -41,10 +41,11 @@ const loadMeta = (listId: string | number): ListMeta => {
 };
 const saveMeta = (listId: string | number, m: ListMeta) =>
   localStorage.setItem(metaKey(listId), JSON.stringify(m));
-const clearMeta = (listId: string | number) =>
-  localStorage.removeItem(metaKey(listId));
 
-export default function ShoppingListDetail({ listId }: Props) {
+export default function ShoppingListDetail({
+  listId,
+  showItems = true,
+}: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const list = useSelector(selectShoppingListById(listId));
   const items = useSelector(selectItemsByListId(listId));
@@ -67,28 +68,11 @@ export default function ShoppingListDetail({ listId }: Props) {
     setShowMeta(false);
   };
 
-  const onClearMeta = () => {
-    setMeta({});
-    clearMeta(listId);
-  };
-
   return (
     <div className={styles.detail}>
-      {/* Hero / summary card */}
-      <div
-        className={styles.heroCard ?? ""}
-        style={{
-          background: "#e3ecee",
-          borderRadius: 16,
-          padding: 16,
-          boxShadow: "0 6px 20px rgba(0,0,0,.12)",
-        }}
-      >
-        {/* Header row */}
-        <div
-          className={styles.heroHeader ?? ""}
-          style={{ display: "flex", justifyContent: "space-between", gap: 12 }}
-        >
+      {/* Hero / summary card — ALWAYS visible */}
+      <div className={styles.heroCard}>
+        <div className={styles.heroHeader}>
           <div style={{ fontWeight: 700 }}>
             <div style={{ fontSize: 16 }}>{list.title}</div>
             <div style={{ fontSize: 14, marginTop: 6 }}>
@@ -123,12 +107,7 @@ export default function ShoppingListDetail({ listId }: Props) {
             >
               Update
             </button>
-            <button
-              className={`${styles.btn} ${styles.btnDanger}`}
-              onClick={onClearMeta}
-            >
-              Delete
-            </button>
+            {/* Delete intentionally omitted */}
           </div>
         </div>
 
@@ -161,16 +140,7 @@ export default function ShoppingListDetail({ listId }: Props) {
             marginTop: 6,
           }}
         >
-          <div
-            className={styles.noteBox ?? ""}
-            style={{
-              background: "white",
-              borderRadius: 12,
-              padding: "10px 12px",
-              boxShadow: "0 2px 8px rgba(0,0,0,.08)",
-              flex: 1,
-            }}
-          >
+          <div className={styles.noteBox}>
             <div>
               <strong>Quantity :</strong> {totalQty}
             </div>
@@ -189,18 +159,19 @@ export default function ShoppingListDetail({ listId }: Props) {
         </div>
       </div>
 
-      {/* Items list */}
-      {items.length === 0 ? (
-        <p className={styles.empty} style={{ marginTop: 14 }}>
-          No items yet.
-        </p>
-      ) : (
-        <ul className={styles.items} style={{ marginTop: 14 }}>
-          {items.map((it) => (
-            <ItemRow key={it.id} listId={listId} {...it} />
-          ))}
-        </ul>
-      )}
+      {/* ITEMS LIST — only renders when showItems === true */}
+      {showItems &&
+        (items.length === 0 ? (
+          <p className={styles.empty} style={{ marginTop: 14 }}>
+            No items yet.
+          </p>
+        ) : (
+          <ul className={styles.items} style={{ marginTop: 14 }}>
+            {items.map((it) => (
+              <ItemRow key={it.id} listId={listId} {...it} />
+            ))}
+          </ul>
+        ))}
 
       {/* Update meta modal */}
       {showMeta && (
@@ -228,7 +199,7 @@ export default function ShoppingListDetail({ listId }: Props) {
   );
 }
 
-/* ───────────── Item row (unchanged core behavior) ───────────── */
+/* ───────────── Item row (no delete) ───────────── */
 function ItemRow({
   listId,
   id,
@@ -359,16 +330,7 @@ function ItemRow({
             <button className={styles.btn} onClick={() => setEditing(true)}>
               Edit
             </button>
-            <button
-              className={`${styles.btn} ${styles.btnDanger}`}
-              onClick={() => {
-                const ok = confirm(`Delete "${name}"?`);
-                if (ok) dispatch(deleteListItem({ listId, itemId: id }));
-              }}
-              disabled={status === "loading"}
-            >
-              Delete
-            </button>
+            {/* Delete intentionally omitted */}
           </div>
         </>
       ) : (
@@ -522,10 +484,7 @@ function MetaModal({
           >
             Save
           </button>
-          <button
-            className={`${styles.btn} ${styles.btnDanger}`}
-            onClick={onCancel}
-          >
+          <button className={styles.btn} onClick={onCancel}>
             Cancel
           </button>
         </div>
@@ -574,7 +533,7 @@ function AddItemModal({
 
   return (
     <div className={styles.modalOverlay} role="dialog" aria-modal="true">
-      <div className={styles.modalCard}>
+      <div className={`${styles.modalCard} ${styles.modalCard}`}>
         <h3 className={styles.modalTitle}>Add Item on Shopping list</h3>
 
         <div className={styles.formRow}>
@@ -643,10 +602,7 @@ function AddItemModal({
           >
             {busy ? "Saving…" : "Create"}
           </button>
-          <button
-            className={`${styles.btn} ${styles.btnDanger}`}
-            onClick={onCancel}
-          >
+          <button className={styles.btn} onClick={onCancel}>
             Cancel
           </button>
         </div>
