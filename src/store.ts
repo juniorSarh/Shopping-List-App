@@ -4,16 +4,17 @@ import { configureStore } from "@reduxjs/toolkit";
 import registerReducer from "./features/registerSlice";
 import loginReducer from "./features/loginSlice";
 import profileRecuder from "./features/profileSlice";
-import shoppingReducer from "./features/shoppingSlice";
-
+import shoppingListRecuder from "./features/shoppinglistSlice";
+import itemsRecuder from "./features/itemsSlice";
 
 export const store = configureStore({
-  reducer: { 
-       register: registerReducer,
-       login: loginReducer,
-       profile: profileRecuder,
-        shopping: shoppingReducer
-   },
+  reducer: {
+    register: registerReducer,
+    login: loginReducer,
+    profile: profileRecuder,
+    shoppingLists: shoppingListRecuder,
+    items: itemsRecuder
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../store";
+
+// lists slice
 import {
   createShoppingList,
   fetchShoppingListsByUser,
   renameShoppingList,
-  selectShoppingError,
   selectShoppingListsByUser,
-  selectShoppingStatus,
-} from "../features/shoppingSlice";
+  selectListsStatus,
+  selectListsError,
+} from "../features/shoppinglistSlice";
+
+// items slice (initial load so details have data)
+import { fetchItems } from "../features/itemsSlice";
+
 import ShoppingListDetail from "./ShoppinglistDetails";
 import styles from "../modules.css/shoppinglist.module.css";
 
-type Props = { userId: string };
+type Props = { userId: string; filterTerm?: string; sortSpec?: string };
 
 const CATEGORIES = [
   "Groceries",
@@ -23,14 +29,15 @@ const CATEGORIES = [
   "Other",
 ];
 
-export default function ShoppingLists({ userId }: Props) {
+export default function ShoppingLists({ userId, filterTerm, sortSpec }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const lists = useSelector(selectShoppingListsByUser(userId));
-  const status = useSelector(selectShoppingStatus);
-  const error = useSelector(selectShoppingError);
+  const status = useSelector(selectListsStatus);
+  const error = useSelector(selectListsError);
 
   useEffect(() => {
     dispatch(fetchShoppingListsByUser(userId));
+    dispatch(fetchItems()); // load all items once
   }, [dispatch, userId]);
 
   const [showAddList, setShowAddList] = useState(false);
@@ -108,6 +115,8 @@ export default function ShoppingLists({ userId }: Props) {
                 <ShoppingListDetail
                   listId={list.id}
                   showItems={isOpen(list.id)}
+                  filterTerm={filterTerm}
+                  sortSpec={sortSpec}
                 />
               </div>
             </li>
@@ -180,7 +189,7 @@ function InlineTitleEditor({
   );
 }
 
-/* ── Add Shopping List Modal (styled like your screenshot) ─────────── */
+/* ── Add Shopping List Modal (styled) ───────────────────────────────── */
 function AddListModal({
   categories,
   busy,

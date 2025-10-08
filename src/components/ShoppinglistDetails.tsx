@@ -1,18 +1,29 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../store";
 import styles from "../modules.css/shoppinglistdetails.module.css";
+
+/* ── lists selectors (split slice) ─────────────────────────────────── */
+import { selectShoppingListById } from "../features/shoppinglistSlice";
+
+/* ── items slice (CRUD + selectors) ────────────────────────────────── */
 import {
   addItemToList,
-  // deleteListItem, // (kept removed)
   selectItemsByListId,
-  selectShoppingListById,
-  selectShoppingStatus,
+  selectItemsStatus,
   togglePurchased,
   updateListItem,
-} from "../features/shoppingSlice";
+} from "../features/itemsSlice";
 
-type Props = { listId: string | number; showItems?: boolean };
+/* ── Props ─────────────────────────────────────────────────────────── */
+type Props = {
+  listId: string | number;
+  showItems?: boolean;
+  /** text from URL query (?q=...) */
+  filterTerm?: string;
+  /** sort spec from URL (?sort=name.asc | name.desc | category.asc | category.desc | date.asc | date.desc) */
+  sortSpec?: string;
+};
 
 const CATEGORIES = [
   "Groceries",
@@ -30,37 +41,90 @@ type ListMeta = {
   imageUrl?: string;
 };
 
+type SortKey = "name" | "category" | "date";
+type SortDir = "asc" | "desc";
+
+const parseSortSpec = (spec?: string): { key: SortKey; dir: SortDir } => {
+  const [rawKey, rawDir] = (spec || "date.desc").split(".");
+  const key: SortKey =
+    rawKey === "name" || rawKey === "category" || rawKey === "date"
+      ? rawKey
+      : "date";
+  const dir: SortDir = rawDir === "asc" ? "asc" : "desc";
+  return { key, dir };
+};
+
 const metaKey = (listId: string | number) => `shopping:listmeta:${listId}`;
 const loadMeta = (listId: string | number): ListMeta => {
   try {
     const raw = localStorage.getItem(metaKey(listId));
-    return raw ? (JSON.parse(raw) as ListMeta) : {};
+    if (!raw) return {};
+    return JSON.parse(raw) as ListMeta;
   } catch {
     return {};
   }
 };
-const saveMeta = (listId: string | number, m: ListMeta) =>
-  localStorage.setItem(metaKey(listId), JSON.stringify(m));
+const saveMeta = (listId: string | number, m: ListMeta): void => {
+  try {
+    localStorage.setItem(metaKey(listId), JSON.stringify(m));
+  } catch {
+    // ignore
+  }
+};
 
 export default function ShoppingListDetail({
   listId,
   showItems = true,
+  filterTerm,
+  sortSpec,
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const list = useSelector(selectShoppingListById(listId));
   const items = useSelector(selectItemsByListId(listId));
-  const status = useSelector(selectShoppingStatus);
+  const status = useSelector(selectItemsStatus);
 
   const [meta, setMeta] = useState<ListMeta>(() => loadMeta(listId));
   const [showMeta, setShowMeta] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
+
+  /* ── filter + sort derived list (no any) ─────────────────────────── */
+  const sorted = useMemo(() => {
+    const q = (filterTerm || "").trim().toLowerCase();
+    const filtered = q
+      ? items.filter((it) => it.name.toLowerCase().includes(q))
+      : items;
+
+    const { key, dir } = parseSortSpec(sortSpec);
+    const mult = dir === "asc" ? 1 : -1;
+
+    return [...filtered].sort((a, b) => {
+      if (key === "name") {
+        return (
+          mult *
+          a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
+        );
+      }
+      if (key === "category") {
+        return (
+          mult *
+          (a.category ?? "").localeCompare(b.category ?? "", undefined, {
+            sensitivity: "base",
+          })
+        );
+      }
+      // key === "date"
+      return mult * (a.createdAt - b.createdAt);
+    });
+  }, [items, filterTerm, sortSpec]);
 
   const totalQty = useMemo(
     () => items.reduce((sum, it) => sum + (Number(it.quantity) || 0), 0),
     [items]
   );
 
-  if (!list) return <div className={styles.empty}>List not found.</div>;
+  if (!list) {
+    return <div className={styles.empty}>List not found.</div>;
+  }
 
   const onSaveMeta = (m: ListMeta) => {
     setMeta(m);
@@ -70,7 +134,7 @@ export default function ShoppingListDetail({
 
   return (
     <div className={styles.detail}>
-      {/* Hero / summary card — ALWAYS visible */}
+      {/* Summary / Hero card — ALWAYS visible */}
       <div className={styles.heroCard}>
         <div className={styles.heroHeader}>
           <div style={{ fontWeight: 700 }}>
@@ -79,8 +143,8 @@ export default function ShoppingListDetail({
               Category:&nbsp;
               <select
                 value={meta.category ?? ""}
-                onChange={(e) => {
-                  const next = {
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                  const next: ListMeta = {
                     ...meta,
                     category: e.target.value || undefined,
                   };
@@ -98,7 +162,6 @@ export default function ShoppingListDetail({
               </select>
             </div>
           </div>
-
           <div style={{ display: "flex", gap: 8, alignItems: "start" }}>
             <button
               className={`${styles.btn} ${styles.btnPrimary}`}
@@ -107,11 +170,9 @@ export default function ShoppingListDetail({
             >
               Update
             </button>
-            {/* Delete intentionally omitted */}
           </div>
         </div>
 
-        {/* Illustration */}
         <div
           style={{ display: "grid", placeItems: "center", padding: "10px 0" }}
         >
@@ -130,7 +191,6 @@ export default function ShoppingListDetail({
           />
         </div>
 
-        {/* Notes + Add Item */}
         <div
           style={{
             display: "flex",
@@ -159,21 +219,23 @@ export default function ShoppingListDetail({
         </div>
       </div>
 
-      {/* ITEMS LIST — only renders when showItems === true */}
+      {/* Items list — only toggled area (filtered + sorted) */}
       {showItems &&
-        (items.length === 0 ? (
+        (sorted.length === 0 ? (
           <p className={styles.empty} style={{ marginTop: 14 }}>
-            No items yet.
+            {filterTerm?.trim()
+              ? "No items match your search."
+              : "No items yet."}
           </p>
         ) : (
           <ul className={styles.items} style={{ marginTop: 14 }}>
-            {items.map((it) => (
+            {sorted.map((it) => (
               <ItemRow key={it.id} listId={listId} {...it} />
             ))}
           </ul>
         ))}
 
-      {/* Update meta modal */}
+      {/* Meta Modal */}
       {showMeta && (
         <MetaModal
           categories={CATEGORIES}
@@ -183,14 +245,24 @@ export default function ShoppingListDetail({
         />
       )}
 
-      {/* Add item modal */}
+      {/* Add Item Modal */}
       {showAdd && (
         <AddItemModal
           categories={CATEGORIES}
           busy={status === "loading"}
           onCancel={() => setShowAdd(false)}
           onCreate={async (payload) => {
-            await dispatch(addItemToList({ listId, ...payload })).unwrap();
+            const { name, quantity, category, notes, images } = payload;
+            await dispatch(
+              addItemToList({
+                listId,
+                name,
+                quantity,
+                category,
+                notes,
+                images,
+              })
+            ).unwrap();
             setShowAdd(false);
           }}
         />
@@ -199,7 +271,7 @@ export default function ShoppingListDetail({
   );
 }
 
-/* ───────────── Item row (no delete) ───────────── */
+/* ───────────── Item row ───────────── */
 function ItemRow({
   listId,
   id,
@@ -220,16 +292,16 @@ function ItemRow({
   images?: string[];
 }) {
   const dispatch = useDispatch<AppDispatch>();
-  const status = useSelector(selectShoppingStatus);
+  const status = useSelector(selectItemsStatus);
 
   const [editing, setEditing] = useState(false);
-  const [eName, setEName] = useState(name);
+  const [eName, setEName] = useState<string>(name);
   const [eQty, setEQty] = useState<string>(String(quantity));
-  const [eCat, setECat] = useState(category ?? "");
-  const [eNotes, setENotes] = useState(notes ?? "");
-  const [eImages, setEImages] = useState((images ?? []).join(", "));
+  const [eCat, setECat] = useState<string>(category ?? "");
+  const [eNotes, setENotes] = useState<string>(notes ?? "");
+  const [eImages, setEImages] = useState<string>((images ?? []).join(", "));
 
-  React.useEffect(() => {
+  useEffect(() => {
     setEName(name);
     setEQty(String(quantity));
     setECat(category ?? "");
@@ -241,22 +313,22 @@ function ItemRow({
     const imgs = eImages
       .split(",")
       .map((s) => s.trim())
-      .filter(Boolean);
+      .filter((s) => s.length > 0);
     const next = {
       name: eName.trim(),
       quantity: Math.max(1, Number(eQty) || 1),
       category: eCat.trim() || undefined,
       notes: eNotes.trim() || undefined,
-      images: imgs.length ? imgs : undefined,
+      images: imgs.length > 0 ? imgs : undefined,
     };
     dispatch(updateListItem({ listId, itemId: id, changes: next }));
     setEditing(false);
   };
 
-  const updateQty = (next: number) => {
-    if (next < 1) return;
+  const updateQty = (nextQty: number) => {
+    if (nextQty < 1) return;
     dispatch(
-      updateListItem({ listId, itemId: id, changes: { quantity: next } })
+      updateListItem({ listId, itemId: id, changes: { quantity: nextQty } })
     );
   };
 
@@ -285,7 +357,7 @@ function ItemRow({
 
             <div className={styles.itemSub}>
               {category ? `${category} • ` : ""}
-              {notes || ""}
+              {notes}
             </div>
 
             {images && images.length > 0 && (
@@ -309,7 +381,7 @@ function ItemRow({
               type="number"
               min={1}
               value={quantity}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 updateQty(Math.max(1, Number(e.target.value) || 1))
               }
               aria-label={`Qty for ${name}`}
@@ -330,7 +402,6 @@ function ItemRow({
             <button className={styles.btn} onClick={() => setEditing(true)}>
               Edit
             </button>
-            {/* Delete intentionally omitted */}
           </div>
         </>
       ) : (
@@ -338,28 +409,36 @@ function ItemRow({
           <div className={styles.editGrid}>
             <input
               value={eName}
-              onChange={(e) => setEName(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setEName(e.target.value)
+              }
               aria-label="Edit name"
               placeholder="Name"
               className={styles.input}
             />
             <input
               value={eCat}
-              onChange={(e) => setECat(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setECat(e.target.value)
+              }
               aria-label="Edit category"
               placeholder="Category"
               className={styles.input}
             />
             <input
               value={eNotes}
-              onChange={(e) => setENotes(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setENotes(e.target.value)
+              }
               aria-label="Edit notes"
               placeholder="Notes"
               className={styles.input}
             />
             <input
               value={eImages}
-              onChange={(e) => setEImages(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setEImages(e.target.value)
+              }
               aria-label="Edit images"
               placeholder="Image URLs (comma-separated)"
               className={styles.input}
@@ -379,7 +458,9 @@ function ItemRow({
               type="number"
               min={1}
               value={eQty}
-              onChange={(e) => setEQty(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setEQty(e.target.value)
+              }
               className={`${styles.input} ${styles.qtyInput}`}
               aria-label="Edit quantity"
             />
@@ -426,9 +507,9 @@ function MetaModal({
   onSave: (m: ListMeta) => void;
   onCancel: () => void;
 }) {
-  const [category, setCategory] = useState(initial.category ?? "");
-  const [notes, setNotes] = useState(initial.notes ?? "");
-  const [imageUrl, setImageUrl] = useState(initial.imageUrl ?? "");
+  const [category, setCategory] = useState<string>(initial.category ?? "");
+  const [notes, setNotes] = useState<string>(initial.notes ?? "");
+  const [imageUrl, setImageUrl] = useState<string>(initial.imageUrl ?? "");
 
   return (
     <div className={styles.modalOverlay} role="dialog" aria-modal="true">
@@ -440,7 +521,9 @@ function MetaModal({
           <select
             className={styles.select ?? styles.input}
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              setCategory(e.target.value)
+            }
           >
             <option value="">select a category</option>
             {categories.map((c) => (
@@ -457,7 +540,9 @@ function MetaModal({
             className={styles.input}
             placeholder="https://…"
             value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setImageUrl(e.target.value)
+            }
           />
         </div>
 
@@ -467,7 +552,9 @@ function MetaModal({
             className={styles.input}
             placeholder="(opt.) Description of list"
             value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setNotes(e.target.value)
+            }
           />
         </div>
 
@@ -510,10 +597,10 @@ function AddItemModal({
   }) => void | Promise<void>;
   onCancel: () => void;
 }) {
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [notes, setNotes] = useState("");
+  const [name, setName] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const [notes, setNotes] = useState<string>("");
   const [quantity, setQuantity] = useState<string>("");
 
   const qty = Number.parseInt(quantity || "0", 10);
@@ -521,28 +608,30 @@ function AddItemModal({
 
   const submit = () => {
     if (!valid) return;
-    const images = imageUrl.trim() ? [imageUrl.trim()] : undefined;
+    const imgs = imageUrl.trim() ? [imageUrl.trim()] : undefined;
     onCreate({
       name: name.trim(),
       quantity: qty,
       category: category || undefined,
       notes: notes || undefined,
-      images,
+      images: imgs,
     });
   };
 
   return (
     <div className={styles.modalOverlay} role="dialog" aria-modal="true">
-      <div className={`${styles.modalCard} ${styles.modalCard}`}>
-        <h3 className={styles.modalTitle}>Add Item on Shopping list</h3>
+      <div className={styles.modalCard}>
+        <h3 className={styles.modalTitle}>Add Item to Shopping list</h3>
 
         <div className={styles.formRow}>
           <label className={styles.label}>Name</label>
           <input
             className={styles.input}
-            placeholder="Enter a list name"
+            placeholder="Enter item name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setName(e.target.value)
+            }
             autoFocus
           />
         </div>
@@ -552,7 +641,9 @@ function AddItemModal({
           <select
             className={styles.select ?? styles.input}
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              setCategory(e.target.value)
+            }
           >
             <option value="">select a category</option>
             {categories.map((c) => (
@@ -567,9 +658,11 @@ function AddItemModal({
           <label className={styles.label}>Image</label>
           <input
             className={styles.input}
-            placeholder="url image"
+            placeholder="URL"
             value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setImageUrl(e.target.value)
+            }
           />
         </div>
 
@@ -577,9 +670,11 @@ function AddItemModal({
           <label className={styles.label}>Notes</label>
           <input
             className={styles.input}
-            placeholder="(opt.) Description of list"
+            placeholder="(opt.) Notes"
             value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setNotes(e.target.value)
+            }
           />
         </div>
 
@@ -587,10 +682,12 @@ function AddItemModal({
           <label className={styles.label}>Quantity</label>
           <input
             className={styles.input}
-            placeholder="enter number"
+            placeholder="Enter number"
             inputMode="numeric"
             value={quantity}
-            onChange={(e) => setQuantity(e.target.value.replace(/[^\d]/g, ""))}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setQuantity(e.target.value.replace(/[^\d]/g, ""))
+            }
           />
         </div>
 

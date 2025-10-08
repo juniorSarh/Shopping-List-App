@@ -1,130 +1,65 @@
 {
   "users": [
     {
-      "id": "3cee",
+      "id": "18d1",
       "email": "sabelohgumede@gmail.com",
       "name": "Sabelo",
       "surname": "Gumede",
-      "cellNumber": "0722950140",
-      "passwordHash": "$2b$12$sugyVWUivhYz8098hXNqwuBOh.ggaufnPjTzdkCYJ3iT8R11Xnfp2"
+      "cellNumber": "123345",
+      "passwordHash": "$2b$12$1GJ4rjLpLJJDHFBAeeYm4.bO.QQtXJ4TSqPspqQPWqfXS1lPF5BtO"
     },
     {
-      "id": "a97a",
-      "email": "sa@m",
-      "name": "mn",
-      "surname": "vv",
+      "id": "8fd9",
+      "email": "m@m",
+      "name": "m",
+      "surname": "m",
+      "cellNumber": "11",
+      "passwordHash": "$2b$12$V7eouj.yD22HM6pocZcpYOhmBrWQkFDdBzzKH35DABpbYfX8VnR/S"
+    },
+    {
+      "id": "3280",
+      "email": "mlu@gmail.com",
+      "name": "mlu",
+      "surname": "moloi",
       "cellNumber": "12",
-      "passwordHash": "$2b$12$etLT96M8V5MkXkJ69dxVUuJdIgwsnH7Wex.8PGevx0gpzmrVyCFZ."
+      "passwordHash": "$2b$12$aAiXQgCr8MPs5DpAVrWH1uR4fBQbdIptlklC4d8KPbRu77yw0ClhC"
     },
     {
-      "id": "eff1",
-      "email": "sha@gmail.com",
-      "name": "Shantela",
-      "surname": "Noyila",
-      "cellNumber": "0897654321",
-      "passwordHash": "$2b$12$35uO56HKmPGEPD8mf/FBPuL0NXNVx8F.o2/k2ZIGqeoEzXL4P234m"
-    },
-    {
-      "id": "1a51",
-      "email": "namelast@mail.com",
-      "name": "Name",
-      "surname": "Name",
-      "cellNumber": "1111111111",
-      "passwordHash": "$2b$12$aKVIEfKEFn4HelFLkxIVm.amtDDFMmARan0/E.k.t61Q/hzSRD68K"
-    },
-    {
-      "id": "7268",
-      "email": "w@q",
-      "name": "q",
-      "surname": "w",
+      "id": "437c",
+      "email": "noyila@gmail.com",
+      "name": "shantela",
+      "surname": "noyila",
       "cellNumber": "123",
-      "passwordHash": "$2b$12$bsh/NvZdhNzIFD/hEwIvPOgbrUersUY1uFEJzC5GtqpDH9HHOgl1O"
-    },
-    {
-      "id": "c45d",
-      "email": "swatson@gmail.com",
-      "name": "harry",
-      "surname": "swatson",
-      "cellNumber": "124578",
-      "passwordHash": "$2b$12$ixnOOBZOySd2kDY0Ao5RPeqFxzqU5t.LVn0xDNkquZo.zq3XtIQT2"
-    },
-    {
-      "id": "927b",
-      "email": "sa@sa",
-      "name": "sa",
-      "surname": "sa",
-      "cellNumber": "123",
-      "passwordHash": "$2b$12$o4jGSkm2A9RT5GXpKuwc5uwQexKHGpsBQ0ThEfMRinpOoHgYQnpYi"
+      "passwordHash": "$2b$12$EtRWHKwKxpjKpj4NDXCrPOck1MFbG1UBA9A6/uTTroVLukV9isX5O"
     }
   ],
-  "ShoppingList": [
+  "lists": [
     {
-      "id": "CiSOL-l6YYRimVl461eF2",
-      "userId": "",
-      "title": "weekend vibe",
-      "ShoppingItems": [
-        {
-          "id": "4WJjVdznbAlz0tdLbyiCv",
-          "name": "bread",
-          "quantity": 2,
-          "purchased": false,
-          "category": "bakery",
-          "notes": "for breakfast",
-          "images": [
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6ozOVUG7lZnZSGc3n6ATPNkMQY1zLsyIcFA&s"
-          ]
-        },
-        {
-          "id": "ThgksDSLunbFtMzsfBuRl",
-          "name": "eggs",
-          "quantity": 1,
-          "purchased": false,
-          "category": "diary",
-          "notes": "healthy",
-          "images": [
-            "https://cdn.britannica.com/94/151894-050-F72A5317/Brown-eggs.jpg"
-          ]
-        }
-      ]
+      "id": "8x9m111v",
+      "userId": "18d1",
+      "title": "party",
+      "createdAt": 1759915773250
     },
     {
-      "id": "fXObm_O9YIWWLR6jJ77-7",
-      "userId": "",
-      "title": "grocery",
-      "ShoppingItems": []
-    },
+      "id": "o26awvn7",
+      "userId": "18d1",
+      "title": "qwerty",
+      "createdAt": 1759920900292
+    }
+  ],
+  "items": [
     {
-      "id": "vZ33PPQI221Tk2PGj02YK",
-      "userId": "",
-      "title": "December",
-      "ShoppingItems": []
-    },
-    {
-      "id": "uJ2DU4Zpc7Tjw3WvXxQO3",
-      "userId": "",
-      "title": "Buying",
-      "ShoppingItems": []
-    },
-    {
-      "id": "s687Nn0JKSZqduu92vopv",
-      "userId": "users{id}",
-      "title": "Royalty birthday",
-      "ShoppingItems": [
-        {
-          "id": "TNm5FpvgvD8nzwScsx-5W",
-          "name": "cake",
-          "quantity": 2,
-          "purchased": false,
-          "category": "Groceries",
-          "notes": "baking at free"
-        }
-      ]
-    },
-    {
-      "id": "4IfpPI9LqnD5p8AvE-XFX",
-      "userId": "users{id}",
-      "title": "sabelo",
-      "ShoppingItems": []
+      "id": "x1o9q8mi",
+      "listId": "8x9m111v",
+      "name": "egg",
+      "quantity": 1,
+      "purchased": false,
+      "category": "Groceries",
+      "notes": "ewrewgreg",
+      "images": [
+        "https://plus.unsplash.com/premium_photo-1683121131492-9ae8cdfea4f7?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bXVzaWMlMjBwYXJ0eXxlbnwwfHwwfHx8MA%3D%3D"
+      ],
+      "createdAt": 1759915798725
     }
   ]
 }
