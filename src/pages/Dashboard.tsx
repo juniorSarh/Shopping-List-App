@@ -8,7 +8,7 @@ import Header from "../components/Header";
 export default function Dashboard() {
   const user = useSelector(selectCurrentUser)!;
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", height:"100vh" }}>
       <Header />
       <div style={{display:'flex',flexDirection:'column'}}>
         <ShoppingLists userId={String(user.id)} />

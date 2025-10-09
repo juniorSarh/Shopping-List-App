@@ -31,6 +31,14 @@
       "surname": "noyila",
       "cellNumber": "123",
       "passwordHash": "$2b$12$EtRWHKwKxpjKpj4NDXCrPOck1MFbG1UBA9A6/uTTroVLukV9isX5O"
+    },
+    {
+      "id": "687d",
+      "email": "r@g",
+      "name": "royalty ",
+      "surname": "Gumede",
+      "cellNumber": "1234",
+      "passwordHash": "$2b$12$eEoB.OSDVDtGt6NLXM69SeRgaOY9hG3i4osk4c7BVygnOsVgYMaC."
     }
   ],
   "lists": [
@@ -51,6 +59,15 @@
       "category": "Clothing",
       "notes": "quality",
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQE9-I_Mh0ilfCk9WXR9JQawLY2l9voFx8iA&s"
+    },
+    {
+      "id": "xi8cr50k",
+      "userId": "687d",
+      "title": "gffg",
+      "createdAt": 1760016561439,
+      "category": "Clothing",
+      "notes": "grfggg",
+      "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/healthy-groceries-bag-66eaef810acf6.jpg?crop=0.564xw:1.00xh;0.295xw,0&resize=1200:*"
     }
   ],
   "items": [
@@ -79,6 +96,16 @@
       ],
       "purchased": false,
       "createdAt": 1760006778414
+    },
+    {
+      "id": "salleu2k",
+      "listId": "xi8cr50k",
+      "name": "eggs",
+      "quantity": 12,
+      "category": "Other",
+      "notes": "werty",
+      "purchased": false,
+      "createdAt": 1760017273934
     }
   ]
 }
