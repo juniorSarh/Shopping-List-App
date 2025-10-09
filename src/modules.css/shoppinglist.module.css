@@ -1,0 +1,202 @@
+.container {
+  max-width: 780px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.heading {
+  margin: 0 0 0.5rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.createRow {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 20px;
+}
+
+.input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.btn {
+  padding: 10px 14px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.06s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btnPrimary {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+}
+
+.btnPrimary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loading {
+  color: #64748b;
+  margin: 8px 0 14px;
+}
+
+.error {
+  color: #b91c1c;
+  margin: 8px 0 14px;
+}
+
+.empty {
+  color: #64748b;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #fff;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.renameRow {
+  display: flex;
+  gap: 8px;
+}
+
+.renameInput {
+  padding: 8px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  min-width: 220px;
+}
+
+.btnDanger {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: #fff;
+}
+
+.btnGhost {
+  background: #fff;
+}
+
+@media (max-width: 520px) {
+  .createRow {
+    flex-direction: column;
+  }
+  .btn,
+  .btnPrimary {
+    width: 100%;
+  }
+}
+
+/* Tinted card + centered title to match your screenshot */
+.modalCardTint {
+  background: #d6e1e3; /* soft blue-grey */
+  border-radius: 16px;
+}
+
+.modalTitleCenter {
+  text-align: center;
+}
+
+/* Centered actions with pill buttons (green / red) */
+.modalActionsCenter {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.btnGreen {
+  background: #22a34a;
+  border-color: #22a34a;
+  color: #fff;
+  border-radius: 999px;
+  padding-inline: 18px;
+}
+
+.btnRed {
+  background: #b91c1c;
+  border-color: #b91c1c;
+  color: #fff;
+  border-radius: 999px;
+  padding-inline: 18px;
+}
+
+/* Layout for the header action with icon + label */
+.cardHeaderActions { display: flex; gap: 8px; }
+
+/* Items container divider */
+.cardBody { border-top: 1px solid #f1f5f9; padding-top: 10px; }
+
+/* Toggle button with chevron */
+.btnToggle { display: inline-flex; align-items: center; gap: 6px; }
+
+/* Chevron: rotates when expanded */
+.chev {
+  transition: transform 0.2s ease;
+  transform: rotate(0deg);
+  display: inline-block;
+}
+.btn[aria-expanded="true"] .chev {
+  transform: rotate(180deg);
+}
+
+/* Optional subtle pressed style when open */
+.btn[aria-expanded="true"] {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+/* Centered modal actions + pills (already added earlier, here for completeness) */
+.modalActionsCenter { display: flex; gap: 12px; justify-content: center; margin-top: 10px; }
+.btnGreen { background: #22a34a; border-color: #22a34a; color: #fff; border-radius: 999px; padding-inline: 18px; }
+.btnRed   { background: #b91c1c; border-color: #b91c1c; color: #fff; border-radius: 999px; padding-inline: 18px; }
+

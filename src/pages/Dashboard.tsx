@@ -1,10 +1,20 @@
-import React from 'react'
+import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../features/loginSlice";
+import ShoppingLists from "../components/Shoppinglists";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 export default function Dashboard() {
+  const user = useSelector(selectCurrentUser)!;
   return (
-    <div>
-      <h1>Dashboard Page</h1>
-      <p>This is the Dashboard page.</p>
+    <div style={{ position: "relative", height:"100vh" }}>
+      <Header />
+      <div style={{display:'flex',flexDirection:'column'}}>
+        <ShoppingLists userId={String(user.id)} />
+      </div>
+      <Outlet />
+      <Footer />
     </div>
-  )
+  );
 }

@@ -70,7 +70,7 @@
 .btnPrimary:hover { filter: brightness(1.03); }
 .btnGhost:hover { background: rgba(0,0,0,0.04); }
 
-.media { display: none; }          /* hide image by default on tiny screens */
+.media { display:none; }          /* hide image by default on tiny screens */
 .heroImg {
   max-width: min(100%, 520px);
   height: auto;

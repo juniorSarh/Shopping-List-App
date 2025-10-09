@@ -7,7 +7,7 @@ type FooterProps = {
 };
 
 export default function Footer({
-  appName = "ShoppingListApp",
+  appName = "ShopEase",
   year = new Date().getFullYear(),
 }: FooterProps) {
   return (
@@ -25,8 +25,7 @@ export default function Footer({
             <span className={styles.appName}>{appName}</span>
           </div>
           <p className={styles.blurb}>
-            Sustainable, modern web experiences for data-driven projects across
-            Africa.
+            Your ultimate shopping companion! Effortlessly organize your groceries,
           </p>
 
           <div className={styles.socials} aria-label="Social links">

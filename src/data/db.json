@@ -1,13 +1,112 @@
 {
   "users": [
     {
-      "id": "f500",
+      "id": "18d1",
       "email": "sabelohgumede@gmail.com",
-      "password": "12345",
       "name": "Sabelo",
       "surname": "Gumede",
-      "cellNumber": "123456"
+      "cellNumber": "123345",
+      "passwordHash": "$2b$12$1GJ4rjLpLJJDHFBAeeYm4.bO.QQtXJ4TSqPspqQPWqfXS1lPF5BtO"
+    },
+    {
+      "id": "8fd9",
+      "email": "m@m",
+      "name": "m",
+      "surname": "m",
+      "cellNumber": "11",
+      "passwordHash": "$2b$12$V7eouj.yD22HM6pocZcpYOhmBrWQkFDdBzzKH35DABpbYfX8VnR/S"
+    },
+    {
+      "id": "3280",
+      "email": "mlu@gmail.com",
+      "name": "mlu",
+      "surname": "moloi",
+      "cellNumber": "12",
+      "passwordHash": "$2b$12$aAiXQgCr8MPs5DpAVrWH1uR4fBQbdIptlklC4d8KPbRu77yw0ClhC"
+    },
+    {
+      "id": "437c",
+      "email": "noyila@gmail.com",
+      "name": "shantela",
+      "surname": "noyila",
+      "cellNumber": "123",
+      "passwordHash": "$2b$12$EtRWHKwKxpjKpj4NDXCrPOck1MFbG1UBA9A6/uTTroVLukV9isX5O"
+    },
+    {
+      "id": "687d",
+      "email": "r@g",
+      "name": "royalty ",
+      "surname": "Gumede",
+      "cellNumber": "1234",
+      "passwordHash": "$2b$12$eEoB.OSDVDtGt6NLXM69SeRgaOY9hG3i4osk4c7BVygnOsVgYMaC."
     }
   ],
-  "items": []
+  "lists": [
+    {
+      "id": "xi8cr50k",
+      "userId": "687d",
+      "title": "gffg",
+      "createdAt": 1760016561439,
+      "category": "Clothing",
+      "notes": "grfggg",
+      "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/healthy-groceries-bag-66eaef810acf6.jpg?crop=0.564xw:1.00xh;0.295xw,0&resize=1200:*"
+    },
+    {
+      "id": "rl6jqe1n",
+      "userId": "18d1",
+      "title": "party 19",
+      "createdAt": 1760034425635,
+      "category": "Groceries",
+      "notes": "Zizobuya kabi",
+      "imageUrl": "https://img.freepik.com/free-vector/party-neon-sign_540545-36.jpg?semt=ais_hybrid&w=740&q=80"
+    }
+  ],
+  "items": [
+    {
+      "id": "a35n0665",
+      "listId": "bj8rd8ak",
+      "name": "wwdwdw",
+      "quantity": 1,
+      "purchased": false,
+      "category": "Groceries",
+      "notes": "dsdsa",
+      "images": [
+        "wdwd"
+      ],
+      "createdAt": 1759998671299
+    },
+    {
+      "id": "salleu2k",
+      "listId": "xi8cr50k",
+      "name": "eggs",
+      "quantity": 12,
+      "category": "Other",
+      "notes": "werty",
+      "purchased": false,
+      "createdAt": 1760017273934
+    },
+    {
+      "id": "oa9zgsjx",
+      "listId": "rl6jqe1n",
+      "name": "beef t-bone",
+      "quantity": 1,
+      "category": "Groceries",
+      "notes": "inyama mfana",
+      "images": [
+        "https://img.freepik.com/free-vector/party-neon-sign_540545-36.jpg?semt=ais_hybrid&w=740&q=80"
+      ],
+      "purchased": false,
+      "createdAt": 1760034483150
+    },
+    {
+      "id": "ny38olpl",
+      "listId": "rl6jqe1n",
+      "name": "chicken",
+      "quantity": 25,
+      "category": "Party",
+      "notes": "awukwaz ukuba chicken nje",
+      "purchased": false,
+      "createdAt": 1760034513586
+    }
+  ]
 }

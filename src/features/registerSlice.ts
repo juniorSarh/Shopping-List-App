@@ -1,6 +1,8 @@
-import { createSlice, createAsyncThunk,  } from "@reduxjs/toolkit";
+// src/features/registerSlice.ts
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
+import bcrypt from "bcryptjs";
 
 export interface RegisterForm {
   email: string;
@@ -13,10 +15,10 @@ export interface RegisterForm {
 export interface User {
   id: number | string;
   email: string;
-  password?: string;
   name: string;
   surname: string;
   cellNumber: string;
+  passwordHash?: string; // stored in json-server
 }
 
 export interface RegisterState {
@@ -25,36 +27,54 @@ export interface RegisterState {
   error: string | null;
   success: boolean;
   createdUser: User | null;
+  token: string | null; // fake token for demo
 }
 
 const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 
-export const submitRegistration = createAsyncThunk<User, RegisterForm>(
-  "register/submitRegistration",
-  async (payload, { rejectWithValue }) => {
-    try {
-      const dupRes = await fetch(
-        `${API_BASE}/users?email=${encodeURIComponent(payload.email)}`
-      );
-      if (!dupRes.ok) throw new Error("Failed to validate email");
-      const existing = (await dupRes.json()) as User[];
-      if (existing.length > 0) {
-        return rejectWithValue("Email already registered") as unknown as User;
-      }
+export const submitRegistration = createAsyncThunk<
+  { user: User; accessToken: string },
+  RegisterForm,
+  { rejectValue: string }
+>("register/submit", async (payload, { rejectWithValue }) => {
+  try {
+    // 1) duplicate email?
+    const dup = await fetch(
+      `${API_BASE}/users?email=${encodeURIComponent(payload.email)}`
+    );
+    if (!dup.ok) return rejectWithValue("Failed to check duplicates");
+    const arr = (await dup.json()) as User[];
+    if (arr.length > 0) return rejectWithValue("Email already registered");
 
-      const res = await fetch(`${API_BASE}/users`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) throw new Error("Failed to register");
-      return (await res.json()) as User;
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Registration failed";
-      return rejectWithValue(msg) as unknown as User;
-    }
+    // 2) hash on the client (prototype only)
+    const passwordHash = await bcrypt.hash(payload.password, 12);
+
+    // 3) create user in json-server (store hash, not password)
+    const res = await fetch(`${API_BASE}/users`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: payload.email,
+        name: payload.name,
+        surname: payload.surname,
+        cellNumber: payload.cellNumber,
+        passwordHash,
+      }),
+    });
+    if (!res.ok) return rejectWithValue("Failed to register user");
+    const user = (await res.json()) as User;
+
+    // 4) make a fake token (for demo)
+    const accessToken = btoa(
+      `uid:${user.id};email:${user.email};ts:${Date.now()}`
+    );
+
+    return { user, accessToken };
+  } catch (e) {
+    console.log("Registration error", e);
+    return rejectWithValue("Registration failed");
   }
-);
+});
 
 const initialState: RegisterState = {
   form: { email: "", password: "", name: "", surname: "", cellNumber: "" },
@@ -62,9 +82,10 @@ const initialState: RegisterState = {
   error: null,
   success: false,
   createdUser: null,
+  token: null,
 };
 
-const registerSlice = createSlice({
+const slice = createSlice({
   name: "register",
   initialState,
   reducers: {
@@ -74,46 +95,41 @@ const registerSlice = createSlice({
     ) => {
       state.form[action.payload.field] = action.payload.value;
     },
-    setForm: (state, action: PayloadAction<RegisterForm>) => {
-      state.form = action.payload;
-    },
     resetForm: (state) => {
       state.form = initialState.form;
       state.loading = false;
       state.error = null;
       state.success = false;
       state.createdUser = null;
+      state.token = null;
     },
   },
   extraReducers: (b) => {
-    b.addCase(submitRegistration.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-      state.success = false;
+    b.addCase(submitRegistration.pending, (s) => {
+      s.loading = true;
+      s.error = null;
+      s.success = false;
     })
-      .addCase(submitRegistration.fulfilled, (state, action) => {
-        state.loading = false;
-        state.success = true;
-        state.createdUser = action.payload;
+      .addCase(submitRegistration.fulfilled, (s, a) => {
+        s.loading = false;
+        s.success = true;
+        s.createdUser = a.payload.user;
+        s.token = a.payload.accessToken;
+        s.form.password = ""; // clear sensitive value
       })
-      .addCase(submitRegistration.rejected, (state, action) => {
-        state.loading = false;
-        state.success = false;
-        state.error =
-          (action.payload as string) ||
-          action.error.message ||
-          "Registration failed";
+      .addCase(submitRegistration.rejected, (s, a) => {
+        s.loading = false;
+        s.success = false;
+        s.error = a.payload || "Registration failed";
       });
   },
 });
 
-export const { updateField, setForm, resetForm } = registerSlice.actions;
-
+export const { updateField, resetForm } = slice.actions;
 export const selectRegister = (s: RootState) => s.register;
 export const selectRegisterForm = (s: RootState) => s.register.form;
 export const selectRegisterLoading = (s: RootState) => s.register.loading;
 export const selectRegisterError = (s: RootState) => s.register.error;
 export const selectRegisterSuccess = (s: RootState) => s.register.success;
-export const selectCreatedUser = (s: RootState) => s.register.createdUser;
 
-export default registerSlice.reducer;
+export default slice.reducer;

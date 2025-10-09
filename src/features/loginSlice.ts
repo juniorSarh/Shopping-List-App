@@ -1,21 +1,22 @@
-import { createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+// src/features/loginSlice.ts
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
+import bcrypt from "bcryptjs";
 
-/** ===== Types ===== */
 export interface LoginForm {
   email: string;
   password: string;
 }
-
 export interface User {
   id: number | string;
   email: string;
-  name: string;
+  name?: string;
   surname?: string;
   cellNumber?: string;
-  // password?: string; // json-server demo only (don't store plaintext in prod)
+  passwordHash?: string;
 }
+type LoginResponse = { user: User; accessToken: string };
 
 export interface LoginState {
   form: LoginForm;
@@ -23,20 +24,17 @@ export interface LoginState {
   error: string | null;
   success: boolean;
   currentUser: User | null;
-  token: string | null; // simulated
+  token: string | null;
 }
 
-/** ===== Config ===== */
 const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 
-/** ===== Helpers (optional persistence) ===== */
 const LS_KEY = "session";
 function saveSession(u: User, token: string) {
   try {
     localStorage.setItem(LS_KEY, JSON.stringify({ user: u, token }));
   } catch {
-    // noop
-    console.log("Failed to save session");
+    console.log("Could not save session");
   }
 }
 function loadSession(): { user: User | null; token: string | null } {
@@ -44,7 +42,7 @@ function loadSession(): { user: User | null; token: string | null } {
     const raw = localStorage.getItem(LS_KEY);
     if (!raw) return { user: null, token: null };
     const parsed = JSON.parse(raw) as { user: User; token: string };
-    return { user: parsed.user, token: parsed.token };
+    return parsed;
   } catch {
     return { user: null, token: null };
   }
@@ -53,38 +51,33 @@ function clearSession() {
   localStorage.removeItem(LS_KEY);
 }
 
-/** ===== Async Thunks ===== */
 export const submitLogin = createAsyncThunk<
-  { user: User; token: string },
-  LoginForm
->("login/submitLogin", async (payload, { rejectWithValue }) => {
+  LoginResponse,
+  { email: string; password: string },
+  { rejectValue: string }
+>("auth/login", async ({ email, password }, { rejectWithValue }) => {
   try {
-    const url = `${API_BASE}/users?email=${encodeURIComponent(
-      payload.email
-    )}&password=${encodeURIComponent(payload.password)}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("Failed to contact server");
+    const res = await fetch(
+      `${API_BASE}/users?email=${encodeURIComponent(email)}`
+    );
+    if (!res.ok) return rejectWithValue("Failed to query user");
+    const arr = (await res.json()) as User[];
+    const user = arr[0];
+    if (!user || !user.passwordHash)
+      return rejectWithValue("Invalid credentials");
 
-    const list = (await res.json()) as User[];
-    if (!Array.isArray(list) || list.length === 0) {
-      return rejectWithValue("Invalid email or password") as unknown as {
-        user: User;
-        token: string;
-      };
-    }
+    const ok = await bcrypt.compare(password, user.passwordHash);
+    if (!ok) return rejectWithValue("Invalid credentials");
 
-    const user = list[0];
-    // Simulate a token (json-server doesn't issue real tokens)
-    const token = btoa(`${user.email}:${Date.now()}`);
-
-    return { user, token };
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : "Login failed";
-    return rejectWithValue(msg) as unknown as { user: User; token: string };
+    const accessToken = btoa(
+      `uid:${user.id};email:${user.email};ts:${Date.now()}`
+    );
+    return { user, accessToken };
+  } catch {
+    return rejectWithValue("Login failed");
   }
 });
 
-/** ===== Initial State ===== */
 const session = loadSession();
 const initialState: LoginState = {
   form: { email: "", password: "" },
@@ -95,8 +88,7 @@ const initialState: LoginState = {
   token: session.token,
 };
 
-/** ===== Slice ===== */
-const loginSlice = createSlice({
+const slice = createSlice({
   name: "login",
   initialState,
   reducers: {
@@ -120,41 +112,35 @@ const loginSlice = createSlice({
     },
   },
   extraReducers: (b) => {
-    b.addCase(submitLogin.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-      state.success = false;
+    b.addCase(submitLogin.pending, (s) => {
+      s.loading = true;
+      s.error = null;
+      s.success = false;
     })
-      .addCase(submitLogin.fulfilled, (state, action) => {
-        state.loading = false;
-        state.success = true;
-        state.currentUser = action.payload.user;
-        state.token = action.payload.token;
-        saveSession(action.payload.user, action.payload.token);
+      .addCase(submitLogin.fulfilled, (s, a) => {
+        s.loading = false;
+        s.success = true;
+        s.currentUser = a.payload.user;
+        s.token = a.payload.accessToken;
+        saveSession(a.payload.user, a.payload.accessToken);
+        s.form.password = ""; // clear sensitive value
       })
-      .addCase(submitLogin.rejected, (state, action) => {
-        state.loading = false;
-        state.success = false;
-        state.error =
-          (action.payload as string) || action.error.message || "Login failed";
-        state.currentUser = null;
-        state.token = null;
+      .addCase(submitLogin.rejected, (s, a) => {
+        s.loading = false;
+        s.success = false;
+        s.error = a.payload || "Login failed";
+        s.currentUser = null;
+        s.token = null;
         clearSession();
       });
   },
 });
 
-/** Actions */
-export const { updateField, resetForm, logout } = loginSlice.actions;
-
-/** Selectors */
+export const { updateField, resetForm, logout } = slice.actions;
 export const selectLogin = (s: RootState) => s.login;
 export const selectLoginForm = (s: RootState) => s.login.form;
 export const selectLoginLoading = (s: RootState) => s.login.loading;
 export const selectLoginError = (s: RootState) => s.login.error;
 export const selectLoginSuccess = (s: RootState) => s.login.success;
 export const selectCurrentUser = (s: RootState) => s.login.currentUser;
-export const selectLoginToken = (s: RootState) => s.login.token;
-
-/** Reducer */
-export default loginSlice.reducer;
+export default slice.reducer;

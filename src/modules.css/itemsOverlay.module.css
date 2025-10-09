@@ -1,0 +1,30 @@
+.overlay {
+  position: fixed; inset: 0; z-index: 50;
+  display: grid; grid-template-rows: auto 1fr;
+}
+.backdrop {
+  position: absolute; inset: 0; background: rgba(0,0,0,.55);
+}
+.panel {
+  position: relative; z-index: 1;
+  height: 100vh; width: 100vw;
+  display: flex; flex-direction: column;
+  color: #e5e7eb;
+  background: #d2d9e8; /* dark slate */
+}
+.topbar {
+  display:flex; justify-content: space-between; align-items: end;
+  padding: 16px 24px; border-bottom: 1px solid rgba(229,231,235,.15);
+}
+.title { font-size: 1.25rem; font-weight: 800; margin: 0; color:#060c15; }
+.subtitle { color:#060c15; font-size: .85rem; }
+.actions { display:flex; gap: 8px; align-items:center; }
+.search {
+  padding: 8px 10px; border:1px solid #e5e7eb; border-radius: 8px; background:#0b1220; color:#e5e7eb;
+}
+.search:focus { outline:none; border-color:#93c5fd; }
+.closeBtn {
+  padding: 8px 12px; border:1px solid #e5e7eb; border-radius: 8px;
+  background:#0b1220; color:#e5e7eb; cursor:pointer; font-weight:600;
+}
+.closeBtn:hover { background:#111827; }
