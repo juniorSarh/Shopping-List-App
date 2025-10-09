@@ -1,28 +1,20 @@
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import ShoppingLists from "../components/Shoppinglists";
-import FiltersBar from "../components/FiltersBar";
+import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/loginSlice";
-import { useSearchParams } from "react-router-dom";
+import ShoppingLists from "../components/Shoppinglists";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 export default function Dashboard() {
-  const user = useSelector(selectCurrentUser);
-  const [params] = useSearchParams();
-  const q = params.get("q") || "";
-  const sort = params.get("sort") || "date.desc";
-
-  if (!user) return null;
-
+  const user = useSelector(selectCurrentUser)!;
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <Header />
-      <div style={{ width: "80%", margin: "0 auto" }}>
-        <FiltersBar />
+      <div style={{display:'flex',flexDirection:'column'}}>
+        <ShoppingLists userId={String(user.id)} />
       </div>
-      {/* Cards always visible; items filtered/sorted inside each card */}
-      <ShoppingLists userId={String(user.id)} filterTerm={q} sortSpec={sort} />
-      <Footer /> 
+      <Outlet />
+      <Footer />
     </div>
   );
 }

@@ -4,10 +4,10 @@ import type { ShoppingList } from "../types/Shopping";
 
 const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 const nid = () => Math.random().toString(36).slice(2, 10);
-async function asJson<T>(res: Response): Promise<T> {
+const asJson = async <T>(res: Response) => {
   if (!res.ok) throw new Error(await res.text());
-  return res.json() as Promise<T>;
-}
+  return (await res.json()) as T;
+};
 
 type ListsState = {
   entities: Record<string, ShoppingList>;
@@ -15,13 +15,7 @@ type ListsState = {
   error: string | null;
 };
 
-const initialState: ListsState = {
-  entities: {},
-  status: "idle",
-  error: null,
-};
-
-/* ── Thunks ────────────────────────────────────────────────────────── */
+const initialState: ListsState = { entities: {}, status: "idle", error: null };
 
 export const fetchShoppingListsByUser = createAsyncThunk<
   ShoppingList[],
@@ -35,42 +29,54 @@ export const fetchShoppingListsByUser = createAsyncThunk<
 
 export const createShoppingList = createAsyncThunk<
   ShoppingList,
-  { userId: string; title: string }
->("shoppingLists/create", async ({ userId, title }) => {
-  const payload: ShoppingList = {
-    id: nid(),
-    userId,
-    title,
-    createdAt: Date.now(),
-  };
-  const res = await fetch(`${API_BASE}/lists`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  return asJson<ShoppingList>(res);
-});
+  {
+    userId: string;
+    title: string;
+    category?: string;
+    notes?: string;
+    imageUrl?: string;
+  }
+>(
+  "shoppingLists/create",
+  async ({ userId, title, category, notes, imageUrl }) => {
+    const payload: ShoppingList = {
+      id: nid(),
+      userId,
+      title,
+      createdAt: Date.now(),
+      category,
+      notes,
+      imageUrl,
+    };
+    const res = await fetch(`${API_BASE}/lists`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    return asJson<ShoppingList>(res);
+  }
+);
 
-export const renameShoppingList = createAsyncThunk<
-  { listId: string; title: string },
-  { listId: string | number; title: string }
->("shoppingLists/rename", async ({ listId, title }) => {
+export const updateShoppingList = createAsyncThunk<
+  { listId: string; changes: Partial<ShoppingList> },
+  { listId: string | number; changes: Partial<ShoppingList> }
+>("shoppingLists/update", async ({ listId, changes }) => {
   const id = String(listId);
   const res = await fetch(`${API_BASE}/lists/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title }),
+    body: JSON.stringify(changes),
   });
   await asJson(res);
-  return { listId: id, title };
+  return { listId: id, changes };
 });
 
-/** Delete list + cascade delete its items */
+
 export const deleteShoppingList = createAsyncThunk<string, string | number>(
   "shoppingLists/delete",
   async (listId) => {
     const id = String(listId);
-    // delete items first
+    // cascade-delete items
     const itemsRes = await fetch(`${API_BASE}/items?listId=${id}`);
     const items = await asJson<{ id: string }[]>(itemsRes);
     await Promise.all(
@@ -78,14 +84,12 @@ export const deleteShoppingList = createAsyncThunk<string, string | number>(
         fetch(`${API_BASE}/items/${it.id}`, { method: "DELETE" })
       )
     );
-    // delete the list
     const res = await fetch(`${API_BASE}/lists/${id}`, { method: "DELETE" });
     await asJson(res);
     return id;
   }
 );
 
-/** Ensure a share code exists on a list (for /share/:listId route) */
 export const ensureShareCode = createAsyncThunk<
   { listId: string; shareCode: string },
   { listId: string | number }
@@ -93,21 +97,18 @@ export const ensureShareCode = createAsyncThunk<
   const id = String(listId);
   const res = await fetch(`${API_BASE}/lists/${id}`);
   const list = await asJson<ShoppingList>(res);
-  const shareCode = list.shareCode || nid() + nid();
+  const code = list.shareCode || nid() + nid();
   if (!list.shareCode) {
-    const patch = await fetch(`${API_BASE}/lists/${id}`, {
+    await fetch(`${API_BASE}/lists/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ shareCode }),
+      body: JSON.stringify({ shareCode: code }),
     });
-    await asJson(patch);
   }
-  return { listId: id, shareCode };
+  return { listId: id, shareCode: code };
 });
 
-/* ── Slice ─────────────────────────────────────────────────────────── */
-
-const shoppingListsSlice = createSlice({
+const slice = createSlice({
   name: "shoppingLists",
   initialState,
   reducers: {},
@@ -129,34 +130,27 @@ const shoppingListsSlice = createSlice({
     b.addCase(createShoppingList.fulfilled, (s, { payload }) => {
       s.entities[payload.id] = payload;
     });
-
-    b.addCase(renameShoppingList.fulfilled, (s, { payload }) => {
-      if (s.entities[payload.listId])
-        s.entities[payload.listId]!.title = payload.title;
+    b.addCase(updateShoppingList.fulfilled, (s, { payload }) => {
+      const l = s.entities[payload.listId];
+      if (l) Object.assign(l, payload.changes);
     });
-
     b.addCase(deleteShoppingList.fulfilled, (s, { payload: id }) => {
       delete s.entities[id];
     });
-
     b.addCase(ensureShareCode.fulfilled, (s, { payload }) => {
-      if (s.entities[payload.listId])
-        s.entities[payload.listId]!.shareCode = payload.shareCode;
+      const l = s.entities[payload.listId];
+      if (l) l.shareCode = payload.shareCode;
     });
   },
 });
 
+export default slice.reducer;
 
-export default shoppingListsSlice.reducer;
-
-/* ── Selectors ─────────────────────────────────────────────────────── */
-
+/* selectors */
 export const selectListsStatus = (s: RootState) => s.shoppingLists.status;
 export const selectListsError = (s: RootState) => s.shoppingLists.error;
-
 export const selectShoppingListById =
   (listId: string | number) => (s: RootState) =>
     s.shoppingLists.entities[String(listId)] || null;
-
 export const selectShoppingListsByUser = (userId: string) => (s: RootState) =>
   Object.values(s.shoppingLists.entities).filter((l) => l.userId === userId);

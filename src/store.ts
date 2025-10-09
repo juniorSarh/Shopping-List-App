@@ -1,19 +1,13 @@
-// src/store/index.ts
 import { configureStore } from "@reduxjs/toolkit";
-
-import registerReducer from "./features/registerSlice";
+import shoppingListsReducer from "./features/shoppinglistSlice";
+import itemsReducer from "./features/itemsSlice";
 import loginReducer from "./features/loginSlice";
-import profileRecuder from "./features/profileSlice";
-import shoppingListRecuder from "./features/shoppinglistSlice";
-import itemsRecuder from "./features/itemsSlice";
 
 export const store = configureStore({
   reducer: {
-    register: registerReducer,
     login: loginReducer,
-    profile: profileRecuder,
-    shoppingLists: shoppingListRecuder,
-    items: itemsRecuder
+    shoppingLists: shoppingListsReducer,
+    items: itemsReducer,
   },
 });
 

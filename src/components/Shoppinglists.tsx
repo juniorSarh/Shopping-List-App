@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../store";
-
-// lists slice
 import {
   createShoppingList,
   fetchShoppingListsByUser,
-  renameShoppingList,
   selectShoppingListsByUser,
   selectListsStatus,
   selectListsError,
 } from "../features/shoppinglistSlice";
-
-// items slice (initial load so details have data)
 import { fetchItems } from "../features/itemsSlice";
-
 import ShoppingListDetail from "./ShoppinglistDetails";
 import styles from "../modules.css/shoppinglist.module.css";
 
-type Props = { userId: string; filterTerm?: string; sortSpec?: string };
-
+type Props = { userId: string };
 const CATEGORIES = [
   "Groceries",
   "Household",
@@ -29,7 +22,7 @@ const CATEGORIES = [
   "Other",
 ];
 
-export default function ShoppingLists({ userId, filterTerm, sortSpec }: Props) {
+export default function ShoppingLists({ userId }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const lists = useSelector(selectShoppingListsByUser(userId));
   const status = useSelector(selectListsStatus);
@@ -37,16 +30,10 @@ export default function ShoppingLists({ userId, filterTerm, sortSpec }: Props) {
 
   useEffect(() => {
     dispatch(fetchShoppingListsByUser(userId));
-    dispatch(fetchItems()); // load all items once
+    dispatch(fetchItems()); // preload items for quick counts
   }, [dispatch, userId]);
 
   const [showAddList, setShowAddList] = useState(false);
-
-  // Per-card "View Items" toggle
-  const [openById, setOpenById] = useState<Record<string, boolean>>({});
-  const isOpen = (id: string | number) => !!openById[String(id)];
-  const toggleOpen = (id: string | number) =>
-    setOpenById((m) => ({ ...m, [String(id)]: !m[String(id)] }));
 
   return (
     <div className={styles.container}>
@@ -72,66 +59,22 @@ export default function ShoppingLists({ userId, filterTerm, sortSpec }: Props) {
         <ul className={styles.list}>
           {lists.map((list) => (
             <li key={String(list.id)} className={styles.card}>
-              <div className={styles.cardHeader}>
-                <InlineTitleEditor
-                  title={list.title}
-                  onSave={(t) =>
-                    dispatch(renameShoppingList({ listId: list.id, title: t }))
-                  }
-                />
-
-                <div className={styles.cardHeaderActions}>
-                  {/* View/Hide Items with rotating chevron */}
-                  <button
-                    className={`${styles.btn} ${styles.btnToggle}`}
-                    onClick={() => toggleOpen(list.id)}
-                    aria-expanded={isOpen(list.id)}
-                    aria-controls={`items-${list.id}`}
-                    title={isOpen(list.id) ? "Hide Items" : "View Items"}
-                  >
-                    <svg
-                      className={styles.chev}
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M6 9l6 6 6-6"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    <span>{isOpen(list.id) ? "Hide Items" : "View Items"}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Card stays visible; only the ITEMS list inside is toggled */}
-              <div id={`items-${list.id}`} className={styles.cardBody}>
-                <ShoppingListDetail
-                  listId={list.id}
-                  showItems={isOpen(list.id)}
-                  filterTerm={filterTerm}
-                  sortSpec={sortSpec}
-                />
-              </div>
+              {/* full card; items not rendered here */}
+              <ShoppingListDetail listId={list.id} showItems={false} />
             </li>
           ))}
         </ul>
       )}
 
-      {/* Add Shopping List POPUP */}
       {showAddList && (
         <AddListModal
           categories={CATEGORIES}
           busy={status === "loading"}
           onCancel={() => setShowAddList(false)}
-          onCreate={async ({ title }) => {
-            await dispatch(createShoppingList({ userId, title }));
+          onCreate={async ({ title, category, imageUrl, notes }) => {
+            await dispatch(
+              createShoppingList({ userId, title, category, imageUrl, notes })
+            );
             setShowAddList(false);
           }}
         />
@@ -140,56 +83,7 @@ export default function ShoppingLists({ userId, filterTerm, sortSpec }: Props) {
   );
 }
 
-/* ── Inline title editor ─────────────────────────────────────────────── */
-function InlineTitleEditor({
-  title,
-  onSave,
-}: {
-  title: string;
-  onSave: (t: string) => void;
-}) {
-  const [editing, setEditing] = useState(false);
-  const [value, setValue] = useState(title);
-
-  React.useEffect(() => setValue(title), [title]);
-
-  if (!editing) {
-    return (
-      <div className={styles.titleRow}>
-        <h3 className={styles.title}>{title}</h3>
-        <button className={styles.btn} onClick={() => setEditing(true)}>
-          Rename
-        </button>
-      </div>
-    );
-  }
-
-  const save = () => {
-    const t = value.trim();
-    if (t.length > 0) onSave(t);
-    setEditing(false);
-  };
-
-  return (
-    <div className={styles.renameRow}>
-      <input
-        className={styles.renameInput}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && save()}
-        aria-label="New title"
-      />
-      <button className={styles.btn} onClick={save}>
-        Save
-      </button>
-      <button className={styles.btn} onClick={() => setEditing(false)}>
-        Cancel
-      </button>
-    </div>
-  );
-}
-
-/* ── Add Shopping List Modal (styled) ───────────────────────────────── */
+/* Modal (popup) like your screenshot */
 function AddListModal({
   categories,
   busy,
@@ -198,16 +92,28 @@ function AddListModal({
 }: {
   categories: string[];
   busy: boolean;
-  onCreate: (payload: { title: string }) => void | Promise<void>;
+  onCreate: (payload: {
+    title: string;
+    category?: string;
+    imageUrl?: string;
+    notes?: string;
+  }) => void | Promise<void>;
   onCancel: () => void;
 }) {
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState(""); // UI-only preview
-  const [imageUrl, setImageUrl] = useState(""); // UI-only preview
-  const [notes, setNotes] = useState(""); // UI-only preview
+  const [category, setCategory] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [notes, setNotes] = useState("");
 
   const valid = title.trim().length > 0;
-  const submit = () => valid && onCreate({ title: title.trim() });
+  const submit = () =>
+    valid &&
+    onCreate({
+      title: title.trim(),
+      category: category || undefined,
+      imageUrl: imageUrl || undefined,
+      notes: notes || undefined,
+    });
 
   return (
     <div className={styles.modalOverlay} role="dialog" aria-modal="true">
@@ -226,7 +132,6 @@ function AddListModal({
             autoFocus
           />
         </div>
-
         <div className={styles.formRow}>
           <label className={styles.label}>Category</label>
           <select
@@ -242,7 +147,6 @@ function AddListModal({
             ))}
           </select>
         </div>
-
         <div className={styles.formRow}>
           <label className={styles.label}>Image</label>
           <input
@@ -252,7 +156,6 @@ function AddListModal({
             onChange={(e) => setImageUrl(e.target.value)}
           />
         </div>
-
         <div className={styles.formRow}>
           <label className={styles.label}>Notes</label>
           <input

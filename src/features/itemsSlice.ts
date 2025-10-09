@@ -4,26 +4,19 @@ import type { ShoppingItem } from "../types/Shopping";
 
 const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 const nid = () => Math.random().toString(36).slice(2, 10);
-async function asJson<T>(res: Response): Promise<T> {
+const asJson = async <T>(res: Response) => {
   if (!res.ok) throw new Error(await res.text());
-  return res.json() as Promise<T>;
-}
+  return (await res.json()) as T;
+};
 
 type ItemsState = {
-  byList: Record<string, ShoppingItem[]>;
+  entities: Record<string, ShoppingItem>;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 };
 
-const initialState: ItemsState = {
-  byList: {},
-  status: "idle",
-  error: null,
-};
+const initialState: ItemsState = { entities: {}, status: "idle", error: null };
 
-/* ── Thunks ────────────────────────────────────────────────────────── */
-
-// Load ALL items once; components select by listId
 export const fetchItems = createAsyncThunk<ShoppingItem[]>(
   "items/fetchAll",
   async () => {
@@ -57,11 +50,11 @@ export const addItemToList = createAsyncThunk<
     id: nid(),
     listId: String(listId),
     name,
-    quantity: Math.max(1, quantity),
-    purchased: false,
+    quantity,
     category,
     notes,
     images,
+    purchased: false,
     createdAt: Date.now(),
   };
   const res = await fetch(`${API_BASE}/items`, {
@@ -73,31 +66,16 @@ export const addItemToList = createAsyncThunk<
 });
 
 export const updateListItem = createAsyncThunk<
-  { listId: string; itemId: string; changes: Partial<ShoppingItem> },
+  { itemId: string; changes: Partial<ShoppingItem> },
   { listId: string | number; itemId: string; changes: Partial<ShoppingItem> }
->("items/update", async ({ listId, itemId, changes }) => {
+>("items/update", async ({ itemId, changes }) => {
   const res = await fetch(`${API_BASE}/items/${itemId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(changes),
   });
   await asJson(res);
-  return { listId: String(listId), itemId, changes };
-});
-
-export const togglePurchased = createAsyncThunk<
-  { listId: string; itemId: string },
-  { listId: string | number; itemId: string }
->("items/togglePurchased", async ({ listId, itemId }) => {
-  const getRes = await fetch(`${API_BASE}/items/${itemId}`);
-  const item = await asJson<ShoppingItem>(getRes);
-  const res = await fetch(`${API_BASE}/items/${itemId}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ purchased: !item.purchased }),
-  });
-  await asJson(res);
-  return { listId: String(listId), itemId };
+  return { itemId, changes };
 });
 
 export const deleteListItem = createAsyncThunk<
@@ -109,9 +87,7 @@ export const deleteListItem = createAsyncThunk<
   return { listId: String(listId), itemId };
 });
 
-/* ── Slice ─────────────────────────────────────────────────────────── */
-
-const itemsSlice = createSlice({
+const slice = createSlice({
   name: "items",
   initialState,
   reducers: {},
@@ -122,62 +98,43 @@ const itemsSlice = createSlice({
     });
     b.addCase(fetchItems.fulfilled, (s, { payload }) => {
       s.status = "succeeded";
-      s.byList = {};
-      payload.forEach((it) => {
-        s.byList[it.listId] = s.byList[it.listId] || [];
-        s.byList[it.listId].push(it);
-      });
+      payload.forEach((i) => (s.entities[i.id] = i));
     });
     b.addCase(fetchItems.rejected, (s, a) => {
       s.status = "failed";
       s.error = a.error.message || "Failed to load items";
     });
 
-    b.addCase(fetchItemsByList.fulfilled, (s, { payload }) => {
-      s.byList[payload.listId] = payload.items;
-    });
-
-    b.addCase(addItemToList.pending, (s) => {
+    b.addCase(fetchItemsByList.pending, (s) => {
       s.status = "loading";
+      s.error = null;
     });
-    b.addCase(addItemToList.fulfilled, (s, { payload }) => {
+    b.addCase(fetchItemsByList.fulfilled, (s, { payload }) => {
       s.status = "succeeded";
-      const lid = payload.listId;
-      s.byList[lid] = s.byList[lid] || [];
-      s.byList[lid].push(payload);
+      payload.items.forEach((i) => (s.entities[i.id] = i));
     });
-    b.addCase(addItemToList.rejected, (s, a) => {
+    b.addCase(fetchItemsByList.rejected, (s, a) => {
       s.status = "failed";
-      s.error = a.error.message || "Failed to add item";
+      s.error = a.error.message || "Failed to load list items";
     });
 
+    b.addCase(addItemToList.fulfilled, (s, { payload }) => {
+      s.entities[payload.id] = payload;
+    });
     b.addCase(updateListItem.fulfilled, (s, { payload }) => {
-      const arr = s.byList[payload.listId];
-      if (!arr) return;
-      const i = arr.findIndex((x) => x.id === payload.itemId);
-      if (i !== -1) arr[i] = { ...arr[i], ...payload.changes };
+      const e = s.entities[payload.itemId];
+      if (e) Object.assign(e, payload.changes);
     });
-
-    b.addCase(togglePurchased.fulfilled, (s, { payload }) => {
-      const it = s.byList[payload.listId]?.find((x) => x.id === payload.itemId);
-      if (it) it.purchased = !it.purchased;
-    });
-
     b.addCase(deleteListItem.fulfilled, (s, { payload }) => {
-      const arr = s.byList[payload.listId];
-      if (!arr) return;
-      s.byList[payload.listId] = arr.filter((i) => i.id !== payload.itemId);
+      delete s.entities[payload.itemId];
     });
   },
 });
 
-export default itemsSlice.reducer;
+export default slice.reducer;
 
-/* ── Selectors ─────────────────────────────────────────────────────── */
-
+/* selectors */
 export const selectItemsStatus = (s: RootState) => s.items.status;
-export const selectItemsError = (s: RootState) => s.items.error;
-
 export const selectItemsByListId =
   (listId: string | number) => (s: RootState) =>
-    s.items.byList[String(listId)] || [];
+    Object.values(s.items.entities).filter((i) => i.listId === String(listId));

@@ -35,31 +35,50 @@
   ],
   "lists": [
     {
-      "id": "8x9m111v",
+      "id": "2jupwnmy",
       "userId": "18d1",
-      "title": "party",
-      "createdAt": 1759915773250
+      "title": "weeee",
+      "createdAt": 1760006745074,
+      "category": "Groceries",
+      "notes": "kjkhjk",
+      "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/healthy-groceries-bag-66eaef810acf6.jpg?crop=0.564xw:1.00xh;0.295xw,0&resize=1200:*"
     },
     {
-      "id": "o26awvn7",
+      "id": "ddz8580d",
       "userId": "18d1",
-      "title": "qwerty",
-      "createdAt": 1759920900292
+      "title": "party",
+      "createdAt": 1760007278115,
+      "category": "Clothing",
+      "notes": "quality",
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQE9-I_Mh0ilfCk9WXR9JQawLY2l9voFx8iA&s"
     }
   ],
   "items": [
     {
-      "id": "x1o9q8mi",
-      "listId": "8x9m111v",
-      "name": "egg",
+      "id": "a35n0665",
+      "listId": "bj8rd8ak",
+      "name": "wwdwdw",
       "quantity": 1,
       "purchased": false,
       "category": "Groceries",
-      "notes": "ewrewgreg",
+      "notes": "dsdsa",
       "images": [
-        "https://plus.unsplash.com/premium_photo-1683121131492-9ae8cdfea4f7?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bXVzaWMlMjBwYXJ0eXxlbnwwfHwwfHx8MA%3D%3D"
+        "wdwd"
       ],
-      "createdAt": 1759915798725
+      "createdAt": 1759998671299
+    },
+    {
+      "id": "zlkw6nj8",
+      "listId": "2jupwnmy",
+      "name": "qwert",
+      "quantity": 1,
+      "category": "Electronics",
+      "notes": "plooooo",
+      "images": [
+        "https://hips.hearstapps.com/hmg-prod/images/healthy-groceries-bag-66eaef810acf6.jpg?crop=0.564xw:1.00xh;0.295xw,0&resize=1200:*"
+      ],
+      "purchased": false,
+      "createdAt": 1760006778414
     }
   ]
 }
