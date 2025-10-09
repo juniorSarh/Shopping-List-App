@@ -36,6 +36,41 @@ export default function ShoppingListDetail({ listId }: Props) {
   const [showMeta, setShowMeta] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
 
+
+  const handleShare = async () => {
+    const itemLines = items.map(
+      (item) =>
+        `- ${item.name} (${item.quantity}${
+          item.category ? `, ${item.category}` : ""
+        })`
+    );
+
+    const shareText = `🛒 Shopping List: ${list.title}\n\n${itemLines.join(
+      "\n"
+    )}\n\nNotes: ${list.notes || "—"}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `Shopping List: ${list.title}`,
+          text: shareText,
+        });
+      } catch (error) {
+        console.error("Share cancelled or failed:", error);
+      }
+    } else {
+      // Fallback to clipboard copy
+      try {
+        await navigator.clipboard.writeText(shareText);
+        alert("List copied to clipboard!");
+      } catch (error) {
+        alert("Failed to copy list.");
+        console.log(error);
+      }
+    }
+  };
+
+
   const totalItems = items.length;
   const totalQty = useMemo(
     () => items.reduce((s, it) => s + (Number(it.quantity) || 0), 0),
@@ -78,12 +113,25 @@ export default function ShoppingListDetail({ listId }: Props) {
             >
               Update
             </button>
+
             <button
               className={styles.btn}
               style={{
-                background: "#b91c1c",
+                background: "#0c4a6e",
                 color: "#fff",
-                borderColor: "#b91c1c",
+                borderColor: "#0c4a6e",
+              }}
+              onClick={() => handleShare()}
+            >
+              Share
+            </button>
+
+            <button
+              className={styles.btn}
+              style={{
+                background: "#af0a2bff",
+                color: "#e6eaf1ff",
+                borderColor: "#f5f1f1ff",
               }}
               onClick={() => {
                 if (confirm(`Delete “${list.title}”?`))

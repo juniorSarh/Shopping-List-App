@@ -43,24 +43,6 @@
   ],
   "lists": [
     {
-      "id": "2jupwnmy",
-      "userId": "18d1",
-      "title": "weeee",
-      "createdAt": 1760006745074,
-      "category": "Groceries",
-      "notes": "kjkhjk",
-      "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/healthy-groceries-bag-66eaef810acf6.jpg?crop=0.564xw:1.00xh;0.295xw,0&resize=1200:*"
-    },
-    {
-      "id": "ddz8580d",
-      "userId": "18d1",
-      "title": "party",
-      "createdAt": 1760007278115,
-      "category": "Clothing",
-      "notes": "quality",
-      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQE9-I_Mh0ilfCk9WXR9JQawLY2l9voFx8iA&s"
-    },
-    {
       "id": "xi8cr50k",
       "userId": "687d",
       "title": "gffg",
@@ -68,6 +50,15 @@
       "category": "Clothing",
       "notes": "grfggg",
       "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/healthy-groceries-bag-66eaef810acf6.jpg?crop=0.564xw:1.00xh;0.295xw,0&resize=1200:*"
+    },
+    {
+      "id": "rl6jqe1n",
+      "userId": "18d1",
+      "title": "party 19",
+      "createdAt": 1760034425635,
+      "category": "Groceries",
+      "notes": "Zizobuya kabi",
+      "imageUrl": "https://img.freepik.com/free-vector/party-neon-sign_540545-36.jpg?semt=ais_hybrid&w=740&q=80"
     }
   ],
   "items": [
@@ -85,19 +76,6 @@
       "createdAt": 1759998671299
     },
     {
-      "id": "zlkw6nj8",
-      "listId": "2jupwnmy",
-      "name": "qwert",
-      "quantity": 1,
-      "category": "Electronics",
-      "notes": "plooooo",
-      "images": [
-        "https://hips.hearstapps.com/hmg-prod/images/healthy-groceries-bag-66eaef810acf6.jpg?crop=0.564xw:1.00xh;0.295xw,0&resize=1200:*"
-      ],
-      "purchased": false,
-      "createdAt": 1760006778414
-    },
-    {
       "id": "salleu2k",
       "listId": "xi8cr50k",
       "name": "eggs",
@@ -106,6 +84,29 @@
       "notes": "werty",
       "purchased": false,
       "createdAt": 1760017273934
+    },
+    {
+      "id": "oa9zgsjx",
+      "listId": "rl6jqe1n",
+      "name": "beef t-bone",
+      "quantity": 1,
+      "category": "Groceries",
+      "notes": "inyama mfana",
+      "images": [
+        "https://img.freepik.com/free-vector/party-neon-sign_540545-36.jpg?semt=ais_hybrid&w=740&q=80"
+      ],
+      "purchased": false,
+      "createdAt": 1760034483150
+    },
+    {
+      "id": "ny38olpl",
+      "listId": "rl6jqe1n",
+      "name": "chicken",
+      "quantity": 25,
+      "category": "Party",
+      "notes": "awukwaz ukuba chicken nje",
+      "purchased": false,
+      "createdAt": 1760034513586
     }
   ]
 }
