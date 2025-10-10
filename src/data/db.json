@@ -50,6 +50,38 @@
       "category": "Clothing",
       "notes": "grfggg",
       "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/healthy-groceries-bag-66eaef810acf6.jpg?crop=0.564xw:1.00xh;0.295xw,0&resize=1200:*"
+    },
+    {
+      "id": "xpob2ggo",
+      "userId": "18d1",
+      "title": "Igilosa yempelasonto",
+      "createdAt": 1760084509706,
+      "category": "Groceries",
+      "notes": "sekobonakala khona"
+    },
+    {
+      "id": "axrimx5k",
+      "userId": "18d1",
+      "title": "izimpahla zengane",
+      "createdAt": 1760084545637,
+      "category": "Clothing",
+      "notes": "december usemnyango"
+    },
+    {
+      "id": "q9cjz1uz",
+      "userId": "18d1",
+      "title": "kuzob kubhungazwa usuku lokuzalwa",
+      "createdAt": 1760084597843,
+      "category": "Other",
+      "notes": "zizobuya kabi "
+    },
+    {
+      "id": "498to50k",
+      "userId": "18d1",
+      "title": "uzibandlela nezawo",
+      "createdAt": 1760084692492,
+      "category": "Household",
+      "notes": "qwert"
     }
   ],
   "items": [
@@ -75,6 +107,19 @@
       "notes": "werty",
       "purchased": false,
       "createdAt": 1760017273934
+    },
+    {
+      "id": "u7lyienz",
+      "listId": "axrimx5k",
+      "name": "grocery 102",
+      "quantity": 1,
+      "category": "Groceries",
+      "notes": "hjkuiytfghj",
+      "images": [
+        "https://img.freepik.com/free-vector/party-neon-sign_540545-36.jpg?semt=ais_hybrid&w=740&q=80"
+      ],
+      "purchased": false,
+      "createdAt": 1760084944722
     }
   ]
 }

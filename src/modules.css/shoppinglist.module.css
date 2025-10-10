@@ -1,17 +1,37 @@
+/* ================================
+   Shopping Lists (cards grid + modals)
+   ================================ */
+
+:root {
+  --bg: #f7f8fb;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e5e7eb;
+  --card: #ffffff;
+
+  --primary: #111827;
+  --green: #166534;
+  --red: #b91c1c;
+  --brand: #1f275e;
+
+  --focus: rgba(99, 102, 241, 0.15);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,.08);
+  --shadow-md: 0 6px 20px rgba(0,0,0,.12);
+}
+
+/* Page container */
 .container {
-  
-  max-width: 800px;
+  width: 100%;
+  max-width: 1280px;
   margin: 2rem auto;
-  display: flex;
-  flex-direction: column;
-  
+  padding: 0 16px;
 }
 
 .heading {
   margin: 0 0 0.5rem;
   font-size: 1.6rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text);
 }
 
 .createRow {
@@ -20,185 +40,201 @@
   margin: 12px 0 20px;
 }
 
+/* Inputs / buttons base */
 .input {
   flex: 1;
   padding: 10px 12px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 10px;
   outline: none;
   font-size: 0.95rem;
+  background: #fff;
+  color: var(--text);
 }
-
 .input:focus {
   border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 0 3px var(--focus);
+}
+
+.select {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+}
+.select:focus { border-color: #6366f1; box-shadow: 0 0 0 3px var(--focus); }
+
+.label {
+  font-size: 0.9rem;
+  color: #334155;
+  font-weight: 600;
 }
 
 .btn {
   padding: 10px 14px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   background: #ffffff;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
-  transition: transform 0.06s ease, background 0.15s ease, border-color 0.15s ease;
+  color: var(--text);
+  transition: transform 0.06s ease, background 0.15s ease, border-color 0.15s ease, box-shadow .15s ease;
 }
-
-.btn:active {
-  transform: translateY(1px);
-}
+.btn:active { transform: translateY(1px); }
+.btn:hover { box-shadow: 0 3px 10px rgba(0,0,0,.06); border-color: #d7dbe2; }
 
 .btnPrimary {
-  background: #111827;
+  background: var(--primary);
   color: #ffffff;
-  border-color: #111827;
+  border-color: var(--primary);
 }
+.btnPrimary:disabled { opacity: 0.6; cursor: not-allowed; }
 
-.btnPrimary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.btnGreen {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
 }
-
-.loading {
-  color: #64748b;
-  margin: 8px 0 14px;
+.btnRed {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
 }
-
-.error {
-  color: #b91c1c;
-  margin: 8px 0 14px;
-}
-
-.empty {
-  color: #64748b;
-}
-
-.list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.card {
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 12px;
-  background: #fff;
-}
-
-.cardHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.titleRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.title {
-  margin: 0;
-  font-size: 1.15rem;
-}
-
-.renameRow {
-  display: flex;
-  gap: 8px;
-}
-
-.renameInput {
-  padding: 8px 10px;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  min-width: 220px;
-}
-
 .btnDanger {
   border-color: #ef4444;
   color: #ef4444;
   background: #fff;
 }
 
-.btnGhost {
-  background: #fff;
+/* Status text */
+.loading { color: var(--muted); margin: 8px 0 14px; }
+.error   { color: #b91c1c;      margin: 8px 0 14px; }
+.empty   { color: var(--muted); }
+
+/* ================================
+   Responsive Cards Grid (1 → 4 cols)
+   ================================ */
+
+/* Your <ul className={styles.list}> becomes the grid container */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: 1fr;     /* 1 card per row (mobile) */
+  gap: 20px;
 }
 
-@media (max-width: 520px) {
-  .createRow {
-    flex-direction: column;
-  }
-  .btn,
-  .btnPrimary {
-    width: 100%;
-  }
+@media (min-width: 768px) {
+  .list { grid-template-columns: repeat(2, 1fr); } /* 2 cols tablet */
+}
+@media (min-width: 1024px) {
+  .list { grid-template-columns: repeat(4, 1fr); } /* 4 cols desktop */
 }
 
-/* Tinted card + centered title to match your screenshot */
-.modalCardTint {
-  background: #d6e1e3; /* soft blue-grey */
-  border-radius: 16px;
-}
-
-.modalTitleCenter {
-  text-align: center;
-}
-
-/* Centered actions with pill buttons (green / red) */
-.modalActionsCenter {
+/* Card */
+.card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: var(--card);
+  height: 100%;
   display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 10px;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
 }
 
-.btnGreen {
-  background: #22a34a;
-  border-color: #22a34a;
-  color: #fff;
-  border-radius: 999px;
-  padding-inline: 18px;
+/* Card header */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+.cardHeaderActions {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
 }
 
-.btnRed {
-  background: #b91c1c;
-  border-color: #b91c1c;
-  color: #fff;
-  border-radius: 999px;
-  padding-inline: 18px;
+/* Rotating chevron toggle for "View Items" */
+.btnToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
-
-/* Layout for the header action with icon + label */
-.cardHeaderActions { display: flex; gap: 8px; }
-
-/* Items container divider */
-.cardBody { border-top: 1px solid #f1f5f9; padding-top: 10px; }
-
-/* Toggle button with chevron */
-.btnToggle { display: inline-flex; align-items: center; gap: 6px; }
-
-/* Chevron: rotates when expanded */
 .chev {
-  transition: transform 0.2s ease;
-  transform: rotate(0deg);
-  display: inline-block;
+  transition: transform .18s ease;
 }
-.btn[aria-expanded="true"] .chev {
+.btnToggle[aria-expanded="true"] .chev {
   transform: rotate(180deg);
 }
 
-/* Optional subtle pressed style when open */
-.btn[aria-expanded="true"] {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+/* Title inline editor */
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.renameRow { display: flex; gap: 8px; }
+.renameInput {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  min-width: 220px;
 }
 
-/* Centered modal actions + pills (already added earlier, here for completeness) */
-.modalActionsCenter { display: flex; gap: 12px; justify-content: center; margin-top: 10px; }
-.btnGreen { background: #22a34a; border-color: #22a34a; color: #fff; border-radius: 999px; padding-inline: 18px; }
-.btnRed   { background: #b91c1c; border-color: #b91c1c; color: #fff; border-radius: 999px; padding-inline: 18px; }
+/* Optional body wrapper inside card */
+.cardBody { display: block; }
 
+/* ================================
+   Modal (Add List)
+   ================================ */
+.modalOverlay {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(0,0,0,.44);
+  display: grid; place-items: center;
+}
+.modalCard {
+  width: min(520px, 92vw);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: var(--shadow-md);
+}
+.modalTitle {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.formRow {
+  display: flex; flex-direction: column; gap: 6px;
+  margin-bottom: 10px;
+}
+.modalActionsCenter {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+/* Responsive small screens */
+@media (max-width: 520px) {
+  .createRow { flex-direction: column; }
+  .btn, .btnPrimary { width: 100%; }
+}

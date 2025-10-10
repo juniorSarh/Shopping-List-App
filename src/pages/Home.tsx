@@ -1,57 +1,63 @@
-import { Link } from "react-router-dom";
-import Navbar from "../components/NavBar";
-import Footer from "../components/Footer";
 import styles from "../modules.css/home.module.css";
-import cart from "../images/shopping-cart.png";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export default function Home() {
   return (
     <div className={styles.wrapper}>
-      <Navbar />
+      <Header />
 
       <main className={styles.main}>
-        <section className={styles.intro}>
-          {/* Left column (text) */}
-          <div>
-            <h1 className={styles.title}>Welcome to ShopEase</h1>
-            <p className={styles.lead}>
-              Your ultimate shopping companion! Effortlessly organize your
-              groceries,
-            </p>
-            <p className={styles.copy}>
-              create quick lists, and never forget an item again. Shop smarter,
-              faster, and stress-free with ShopEase by your side!
-            </p>
+        <div className={styles.container}>
+          <section className={styles.hero}>
+            <div>
+              <h1 className={styles.title}>Your shopping, simplified.</h1>
+              <p className={styles.subtitle}>
+                Create lists, add items, share with family and keep everything
+                in sync.
+              </p>
+              <div className={styles.ctaRow}>
+                <a className={styles.primaryBtn} href="/signup">
+                  Get started
+                </a>
+                <a className={styles.ghostBtn} href="/login">
+                  I already have an account
+                </a>
+              </div>
 
-            <div className={styles.actions}>
-              <Link
-                to="/signup"
-                className={`${styles.btn} ${styles.btnPrimary}`}
-              >
-                Sign Up
-              </Link>
-              <Link to="/login" className={`${styles.btn} ${styles.btnGhost}`}>
-                Log In
-              </Link>
+              <div className={styles.featureGrid}>
+                <div className={styles.featureCard}>
+                  <h3 className={styles.featureTitle}>Secure</h3>
+                  <p className={styles.featureText}>
+                    Encrypted credentials, protected routes.
+                  </p>
+                </div>
+                <div className={styles.featureCard}>
+                  <h3 className={styles.featureTitle}>Organised</h3>
+                  <p className={styles.featureText}>
+                    Categories, notes, images & sorting.
+                  </p>
+                </div>
+                <div className={styles.featureCard}>
+                  <h3 className={styles.featureTitle}>Fast</h3>
+                  <p className={styles.featureText}>
+                    Redux Toolkit + JSON Server.
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
 
-          {/* Right column (image) — becomes visible and nicely placed on larger screens */}
-          <div className={styles.media}>
-            <img
-              className={styles.heroImg}
-              src={cart}
-              alt="Shopping cart illustration"
-              width={560}
-              height={420}
-              loading="eager"
-              decoding="async"
-            />
-          </div>
-        </section>
+            <div className={styles.heroMedia}>
+              {/* optional illustration */}
+              {/* <img className={styles.heroImage} src="/hero.png" alt="" /> */}
+            </div>
+          </section>
+        </div>
       </main>
 
-      <Footer />
+      <div className={styles.footerSlot}>
+        <Footer />
+      </div>
     </div>
   );
 }

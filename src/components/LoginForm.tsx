@@ -1,6 +1,5 @@
 
 import type { FormEvent } from "react";
-import styles from "../modules.css/Login.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -11,6 +10,7 @@ import {
   selectLoginError,
 } from "../features/loginSlice";
 import type { AppDispatch } from "../store";
+import styles from "../modules.css/auth.module.css";
 
 export default function LoginForm() {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,47 +32,54 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={onSubmit} className={styles.form}>
-      <h2 className={styles.heading}>Login</h2>
+    <form onSubmit={onSubmit} className={styles.authCard}>
+      <h2 className={styles.authTitle}>Login</h2>
+      <p className={styles.authSubtitle}>Welcome back 👋</p>
+      <div className={styles.form}>
+        <label className={styles.row}>
+          <span className={styles.label}>Email</span>
+          <input
+            className={styles.input}
+            type="email"
+            value={form.email}
+            onChange={(e) =>
+              dispatch(updateField({ field: "email", value: e.target.value }))
+            }
+            required
+          />
+        </label>
 
-      <label className={styles.field}>
-        <span className={styles.label}>Email</span>
-        <input
-          className={styles.input}
-          type="email"
-          value={form.email}
-          onChange={(e) =>
-            dispatch(updateField({ field: "email", value: e.target.value }))
-          }
-          required
-        />
-      </label>
+        <label className={styles.row}>
+          <span className={styles.label}>Password</span>
+          <input
+            className={styles.input}
+            type="password"
+            value={form.password}
+            onChange={(e) =>
+              dispatch(
+                updateField({ field: "password", value: e.target.value })
+              )
+            }
+            required
+          />
+        </label>
 
-      <label className={styles.field}>
-        <span className={styles.label}>Password</span>
-        <input
-          className={styles.input}
-          type="password"
-          value={form.password}
-          onChange={(e) =>
-            dispatch(updateField({ field: "password", value: e.target.value }))
-          }
-          required
-        />
-      </label>
+        <p className={styles.helper}>
+          Don`t have account? <Link to="/signup">SignUp</Link> here
+        </p>
 
-      <p>
-        {" "}
-        Don`t have account? <Link to="/signup">SignUp</Link> here
-      </p>
+        <div className={styles.actions}>
+          <button
+            className={styles.primaryBtn}
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Logging in…" : "Login"}
+          </button>
+        </div>
 
-      <div className={styles.actions}>
-        <button className={styles.button} type="submit" disabled={loading}>
-          {loading ? "Logging in…" : "Login"}
-        </button>
+        {error && <p className={styles.error}>{error}</p>}
       </div>
-
-      {error && <p className={styles.error}>{error}</p>}
     </form>
   );
 

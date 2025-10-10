@@ -1,84 +1,37 @@
-/* ================================
-   Shopping List Details (Card + Modals)
-   File: shoppinglistdetails.module.css
-   ================================ */
+/* ======================================
+   Shopping List Detail (card + modals + items)
+   ====================================== */
 
 :root {
-  --bg: #f7f8fb;
   --text: #0f172a;
   --muted: #64748b;
   --border: #e5e7eb;
   --card: #ffffff;
 
-  --primary: #1f275e;   /* buttons: view/add */
-  --success: #166534;   /* update */
-  --danger: #b91c1c;    /* cancel */
-  --share: #0c4a6e;     /* share */
+  --primary: #1f275e;
+  --success: #166534;
+  --danger: #b91c1c;
 
+  --focus: rgba(99, 102, 241, 0.15);
   --shadow-sm: 0 2px 8px rgba(0,0,0,.08);
   --shadow-md: 0 6px 20px rgba(0,0,0,.12);
-  --focus: rgba(99, 102, 241, 0.15);
 }
 
-/* ======================================
-   Responsive grid for list of cards
-   Use on the parent that renders many cards:
-   <ul className={`${styles.list} ${styles.cardGrid}`}>…</ul>
-   ====================================== */
-/* === Card container layout === */
-.cardGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 30px;
-}
-
-/* === Ensure each card uses full width === */
-.detail {
-  width: 100%;
-  max-width: unset;
-  
-  box-sizing: border-box;
-}
-
-
-@media (min-width: 768px) {
-  .cardGrid { grid-template-columns: repeat(2, 1fr); }  /* 2-up (tablet) */
-}
-@media (min-width: 1024px) {
-  .cardGrid { grid-template-columns: repeat(4, 1fr); }  /* 4-up (desktop) */
-}
-
-/* Make each card fill its grid cell nicely if used inside a <li> */
-.card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ======================================
-   Shopping List Detail Card
-   ====================================== */
+/* the detail lives inside each grid card */
 .detail {
   width: 100%;
   max-width: unset;
   box-sizing: border-box;
 }
 
+/* hero card area inside each card */
 .heroCard {
-  background: #d7e3e6; /* you can theme this */
+  background: #d7e3e6;
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 16px;
   box-shadow: var(--shadow-md);
-  transition: transform .15s ease, box-shadow .2s ease;
 }
-
-.heroCard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(0,0,0,.14);
-}
-
 .heroHeader {
   display: flex;
   align-items: start;
@@ -86,6 +39,7 @@
   gap: 12px;
 }
 
+/* summary notes box */
 .noteBox {
   background: var(--card);
   border: 1px solid var(--border);
@@ -94,123 +48,23 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* ======================================
-   Buttons
-   ====================================== */
+/* basic controls reused by modals */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
   padding: 10px 14px;
   border: 1px solid var(--border);
   background: #ffffff;
-  color: var(--text);
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
-
+  color: var(--text);
   transition: transform 0.06s ease, background 0.15s ease, border-color 0.15s ease, box-shadow .15s ease;
 }
-
-.btn:active {
-  transform: translateY(1px);
-}
-
-/* Optional semantic variants (not required by component but handy) */
+.btn:active { transform: translateY(1px); }
+.btn:hover { box-shadow: 0 3px 10px rgba(0,0,0,.06); border-color: #d7dbe2; }
 .btnPrimary {
   background: var(--primary);
-  color: #fff;
+  color: #ffffff;
   border-color: var(--primary);
-}
-.btnSuccess {
-  background: var(--success);
-  color: #fff;
-  border-color: var(--success);
-}
-.btnDanger {
-  background: var(--danger);
-  color: #fff;
-  border-color: var(--danger);
-}
-.btnShare {
-  background: var(--share);
-  color: #fff;
-  border-color: var(--share);
-}
-
-.btn[disabled] {
-  opacity: .6;
-  cursor: not-allowed;
-}
-
-/* Hover cues */
-.btn:hover {
-  box-shadow: 0 3px 10px rgba(0,0,0,.06);
-  border-color: #d7dbe2;
-}
-
-/* ======================================
-   Empty / helper text
-   ====================================== */
-.empty {
-  color: var(--muted);
-}
-
-/* ======================================
-   Modal (Overlay + Card)
-   ====================================== */
-@keyframes overlayFadeIn {
-  from { opacity: 0; } to { opacity: 1; }
-}
-@keyframes cardPop {
-  from { transform: translateY(6px) scale(.98); opacity: 0; }
-  to   { transform: translateY(0) scale(1);      opacity: 1; }
-}
-
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  background: rgba(0,0,0,.44);
-  display: grid;
-  place-items: center;
-  animation: overlayFadeIn .18s ease-out;
-}
-
-.modalCard {
-  width: min(520px, 92vw);
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: var(--shadow-md);
-  animation: cardPop .2s ease-out;
-}
-
-.modalTitle {
-  margin: 0 0 12px;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--text);
-  text-align: center;
-}
-
-/* ======================================
-   Form controls
-   ====================================== */
-.formRow {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-
-.label {
-  font-size: .9rem;
-  color: #334155;
-  font-weight: 600;
 }
 
 .input,
@@ -223,42 +77,88 @@
   background: #fff;
   color: var(--text);
 }
-
 .input:focus,
 .select:focus {
   border-color: #6366f1;
   box-shadow: 0 0 0 3px var(--focus);
 }
 
-.modalActions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 12px;
-}
+.empty { color: var(--muted); }
 
-/* ======================================
-   Responsiveness
-   ====================================== */
-@media (max-width: 640px) {
-  .heroHeader {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-
-/* (Optional) Utility if you wrap image inside the hero */
-.heroImage {
-  width: 220px;
-  height: 220px;
-  object-fit: contain;
-  opacity: .95;
-}
-
-/* If your list container still uses .list from elsewhere, you can combine:
-   <ul className={`${styles.list} ${styles.cardGrid}`}> */
-.list {
+/* Items list INSIDE overlay or card (when used) */
+.items {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+/* row layout */
+.itemRow {
+  display: grid;
+  grid-template-columns: 1fr 140px 160px 100px;
+  gap: 8px;
+  align-items: start;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  background: #fff;
+}
+.itemHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.itemName { font-weight: 700; color: var(--text); }
+.purchased { color: var(--muted); text-decoration: line-through; }
+.itemSub { font-size: 12px; color: #6b7280; margin-top: 4px; }
+
+.thumbs { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.thumb {
+  width: 54px; height: 54px; object-fit: cover;
+  border-radius: 8px; border: 1px solid var(--border);
+}
+
+.qtyGroup { display: flex; align-items: center; gap: 6px; }
+.qtyInput { width: 64px; text-align: center; }
+.badge { color: #334155; }
+.actions { display: flex; gap: 8px; justify-content: flex-end; }
+.editGrid { display: grid; gap: 6px; }
+
+/* Modals (update meta / add item) */
+.modalOverlay {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(0,0,0,.44);
+  display: grid; place-items: center;
+}
+.modalCard {
+  width: min(520px, 92vw);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: var(--shadow-md);
+}
+.modalTitle {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.formRow {
+  display: flex; flex-direction: column; gap: 6px;
+  margin-bottom: 10px;
+}
+.label {
+  font-size: 0.9rem; color: #334155; font-weight: 600;
+}
+.modalActions {
+  display: flex; gap: 10px; justify-content: flex-end; margin-top: 12px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 720px) {
+  .itemRow { grid-template-columns: 1fr; }
+  .actions { justify-content: flex-start; }
 }
