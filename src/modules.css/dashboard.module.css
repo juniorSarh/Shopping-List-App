@@ -1,0 +1,77 @@
+/* ================================
+   Dashboard page layout
+   File: dashboard.module.css
+   ================================ */
+
+:root {
+  --bg: #f7f8fb;
+}
+
+/* Page wrapper — enables sticky footer layout */
+.page {
+  min-height: 100vh;             /* fill viewport height */
+  display: flex;                 /* stack header / main / footer */
+  flex-direction: column;
+  background: var(--bg);
+}
+
+/* Main content takes remaining space between header and footer */
+.main {
+  flex: 1 0 auto;                /* grow to push footer down */
+  display: flex;
+  justify-content: center;
+  padding: 16px 20px;
+  position: relative;   
+           /* keeps overlay portals positioned if needed */
+}
+
+/* Optional inner width container */
+.container {
+  width: 100%;
+padding: 25px;
+
+  display: flex; 
+      /* nice readable width */
+}
+
+/* If your overlay is absolutely/fixed positioned, it can sit above main */
+.outletLayer {
+  position: relative;
+  z-index: 10;                   /* ensure overlays (Outlet) can appear above lists */
+}
+
+/* (Optional) Only needed if you wrap <Footer /> with a div using this class.
+   The sticky layout works without it because of the flex column above. */
+.footerSlot {
+  margin-top: auto;              /* ensures footer hugs bottom when content is short */
+}
+
+/* ======================================
+   Responsive grid helper for list cards
+   Apply this to the element that directly contains the cards (e.g., <ul> or a <div> that wraps the cards).
+   1 column on small screens, 2 on tablet, 4 on desktop.
+   ====================================== */
+.cardGrid {
+  display: grid;
+  grid-template-columns: 1fr;    /* 1-up mobile */
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .cardGrid {
+    grid-template-columns: repeat(2, 1fr);  /* 2-up tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  .cardGrid {
+    grid-template-columns: repeat(4, 1fr);  /* 4-up desktop */
+  }
+}
+
+/* Make each card fill its grid area vertically if needed */
+.cardFill {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}

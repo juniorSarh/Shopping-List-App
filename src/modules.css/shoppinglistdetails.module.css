@@ -25,11 +25,22 @@
    Use on the parent that renders many cards:
    <ul className={`${styles.list} ${styles.cardGrid}`}>…</ul>
    ====================================== */
+/* === Card container layout === */
 .cardGrid {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
-  grid-template-columns: 1fr;      /* 1 card on small screens */
+  padding: 30px;
 }
+
+/* === Ensure each card uses full width === */
+.detail {
+  width: 100%;
+  max-width: unset;
+  
+  box-sizing: border-box;
+}
+
 
 @media (min-width: 768px) {
   .cardGrid { grid-template-columns: repeat(2, 1fr); }  /* 2-up (tablet) */

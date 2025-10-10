@@ -5,6 +5,7 @@
   background: #0f172a;           /* slate-900 */
   color: #e5e7eb;                 /* gray-200 */
   border-top: 1px solid #1f2937;  /* slate-800 */
+   margin-top: auto;
 }
 
 .inner {
