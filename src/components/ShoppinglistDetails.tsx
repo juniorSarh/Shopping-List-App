@@ -17,6 +17,7 @@ import {
 } from "../features/itemsSlice";
 
 type Props = { listId: string | number; showItems?: boolean };
+
 const CATEGORIES = [
   "Groceries",
   "Household",
@@ -36,8 +37,8 @@ export default function ShoppingListDetail({ listId }: Props) {
   const [showMeta, setShowMeta] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
 
-
   const handleShare = async () => {
+    if (!list) return;
     const itemLines = items.map(
       (item) =>
         `- ${item.name} (${item.quantity}${
@@ -59,7 +60,6 @@ export default function ShoppingListDetail({ listId }: Props) {
         console.error("Share cancelled or failed:", error);
       }
     } else {
-      // Fallback to clipboard copy
       try {
         await navigator.clipboard.writeText(shareText);
         alert("List copied to clipboard!");
@@ -69,7 +69,6 @@ export default function ShoppingListDetail({ listId }: Props) {
       }
     }
   };
-
 
   const totalItems = items.length;
   const totalQty = useMemo(
@@ -100,6 +99,7 @@ export default function ShoppingListDetail({ listId }: Props) {
               <strong>Category:</strong>&nbsp;{list.category ?? "—"}
             </div>
           </div>
+
           <div style={{ display: "flex", gap: 8 }}>
             <button
               className={styles.btn}
@@ -121,7 +121,7 @@ export default function ShoppingListDetail({ listId }: Props) {
                 color: "#fff",
                 borderColor: "#0c4a6e",
               }}
-              onClick={() => handleShare()}
+              onClick={handleShare}
             >
               Share
             </button>
@@ -134,8 +134,9 @@ export default function ShoppingListDetail({ listId }: Props) {
                 borderColor: "#f5f1f1ff",
               }}
               onClick={() => {
-                if (confirm(`Delete “${list.title}”?`))
+                if (confirm(`Delete “${list.title}”?`)) {
                   dispatch(deleteShoppingList(list.id));
+                }
               }}
             >
               Delete
@@ -188,7 +189,9 @@ export default function ShoppingListDetail({ listId }: Props) {
               <strong>Notes:</strong> {list.notes?.trim() || "—"}
             </div>
           </div>
+
           <div style={{ display: "flex", gap: 12 }}>
+            {/* Relative path so /dashboard -> /dashboard/lists/:id/items */}
             <Link
               className={styles.btn}
               style={{
@@ -202,6 +205,7 @@ export default function ShoppingListDetail({ listId }: Props) {
             >
               view&nbsp; Items
             </Link>
+
             <button
               className={styles.btn}
               style={{
@@ -229,8 +233,7 @@ export default function ShoppingListDetail({ listId }: Props) {
             notes: list.notes ?? "",
           }}
           onCancel={() => setShowMeta(false)}
-          onSave={async (data) => {
-            const { title, category, imageUrl, notes } = data;
+          onSave={async ({ title, category, imageUrl, notes }) => {
             await dispatch(
               updateShoppingList({
                 listId,
@@ -289,6 +292,7 @@ function MetaModal({
     <div className={styles.modalOverlay} role="dialog" aria-modal="true">
       <div className={styles.modalCard}>
         <h3 className={styles.modalTitle}>Update list details</h3>
+
         <div className={styles.formRow}>
           <label className={styles.label}>Title</label>
           <input
@@ -297,6 +301,7 @@ function MetaModal({
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
+
         <div className={styles.formRow}>
           <label className={styles.label}>Category</label>
           <select
@@ -312,6 +317,7 @@ function MetaModal({
             ))}
           </select>
         </div>
+
         <div className={styles.formRow}>
           <label className={styles.label}>Image URL</label>
           <input
@@ -321,6 +327,7 @@ function MetaModal({
             onChange={(e) => setImageUrl(e.target.value)}
           />
         </div>
+
         <div className={styles.formRow}>
           <label className={styles.label}>Notes</label>
           <input
@@ -330,6 +337,7 @@ function MetaModal({
             onChange={(e) => setNotes(e.target.value)}
           />
         </div>
+
         <div className={styles.modalActions}>
           <button
             className={styles.btn}
@@ -401,6 +409,7 @@ function AddItemModal({
     <div className={styles.modalOverlay} role="dialog" aria-modal="true">
       <div className={styles.modalCard}>
         <h3 className={styles.modalTitle}>Add Item on Shopping list</h3>
+
         <div className={styles.formRow}>
           <label className={styles.label}>Name</label>
           <input
@@ -411,6 +420,7 @@ function AddItemModal({
             autoFocus
           />
         </div>
+
         <div className={styles.formRow}>
           <label className={styles.label}>Category</label>
           <select
@@ -426,6 +436,7 @@ function AddItemModal({
             ))}
           </select>
         </div>
+
         <div className={styles.formRow}>
           <label className={styles.label}>Image</label>
           <input
@@ -435,6 +446,7 @@ function AddItemModal({
             onChange={(e) => setImageUrl(e.target.value)}
           />
         </div>
+
         <div className={styles.formRow}>
           <label className={styles.label}>Notes</label>
           <input
@@ -444,6 +456,7 @@ function AddItemModal({
             onChange={(e) => setNotes(e.target.value)}
           />
         </div>
+
         <div className={styles.formRow}>
           <label className={styles.label}>Quantity</label>
           <input
@@ -454,6 +467,7 @@ function AddItemModal({
             onChange={(e) => setQuantity(e.target.value.replace(/[^\d]/g, ""))}
           />
         </div>
+
         <div className={styles.modalActions}>
           <button
             className={styles.btn}

@@ -10,7 +10,7 @@ export default function Dashboard() {
   return (
     <div style={{ position: "relative", height:"100vh" }}>
       <Header />
-      <div style={{display:'flex',flexDirection:'column'}}>
+      <div style={{display:'flex',flexDirection:'row'}}>
         <ShoppingLists userId={String(user.id)} />
       </div>
       <Outlet />
