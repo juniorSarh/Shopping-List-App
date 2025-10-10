@@ -52,12 +52,30 @@
       "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/healthy-groceries-bag-66eaef810acf6.jpg?crop=0.564xw:1.00xh;0.295xw,0&resize=1200:*"
     },
     {
-      "id": "rl6jqe1n",
+      "id": "912iz0u5",
       "userId": "18d1",
-      "title": "party 19",
-      "createdAt": 1760034425635,
+      "title": "shantela 21st b.d",
+      "createdAt": 1760077890310,
+      "category": "Other",
+      "notes": "uzobe enikwa key wokwenza",
+      "imageUrl": "https://img.freepik.com/free-vector/party-neon-sign_540545-36.jpg?semt=ais_hybrid&w=740&q=80"
+    },
+    {
+      "id": "mwhsce99",
+      "userId": "18d1",
+      "title": "igilosa yakaZibandlela",
+      "createdAt": 1760078731766,
       "category": "Groceries",
-      "notes": "Zizobuya kabi",
+      "notes": "kulungiswa kusekude ",
+      "imageUrl": "https://img.freepik.com/free-vector/party-neon-sign_540545-36.jpg?semt=ais_hybrid&w=740&q=80"
+    },
+    {
+      "id": "csmucs1s",
+      "userId": "18d1",
+      "title": "Izimpahla zesikole",
+      "createdAt": 1760078855658,
+      "category": "Clothing",
+      "notes": "KUmele zithengiwe ngizibandlela",
       "imageUrl": "https://img.freepik.com/free-vector/party-neon-sign_540545-36.jpg?semt=ais_hybrid&w=740&q=80"
     }
   ],
@@ -84,29 +102,6 @@
       "notes": "werty",
       "purchased": false,
       "createdAt": 1760017273934
-    },
-    {
-      "id": "oa9zgsjx",
-      "listId": "rl6jqe1n",
-      "name": "beef t-bone",
-      "quantity": 1,
-      "category": "Groceries",
-      "notes": "inyama mfana",
-      "images": [
-        "https://img.freepik.com/free-vector/party-neon-sign_540545-36.jpg?semt=ais_hybrid&w=740&q=80"
-      ],
-      "purchased": false,
-      "createdAt": 1760034483150
-    },
-    {
-      "id": "ny38olpl",
-      "listId": "rl6jqe1n",
-      "name": "chicken",
-      "quantity": 25,
-      "category": "Party",
-      "notes": "awukwaz ukuba chicken nje",
-      "purchased": false,
-      "createdAt": 1760034513586
     }
   ]
 }

@@ -7,7 +7,7 @@ import {
   selectShoppingListsByUser,
   selectListsStatus,
   selectListsError,
-} from "../features/shoppinglistSlice";
+} from "../features/shoppingListSlice";
 import { fetchItems } from "../features/itemsSlice";
 import ShoppingListDetail from "./ShoppinglistDetails";
 import styles from "../modules.css/shoppinglist.module.css";
