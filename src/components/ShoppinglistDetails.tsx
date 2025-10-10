@@ -8,7 +8,7 @@ import {
   selectShoppingListById,
   updateShoppingList,
   deleteShoppingList,
-} from "../features/shoppinglistSlice";
+} from "../features/shoppingListSlice";
 
 import {
   addItemToList,

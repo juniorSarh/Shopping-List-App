@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import type { ShoppingItem } from "../types/Shopping";
+import type { ShoppingItem } from "../types/shopping";
 
 const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 const nid = () => Math.random().toString(36).slice(2, 10);

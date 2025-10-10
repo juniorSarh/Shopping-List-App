@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import type { AppDispatch } from "../store";
-import { selectShoppingListById } from "../features/shoppinglistSlice";
+import { selectShoppingListById } from "../features/shoppingListSlice";
 import {
   fetchItemsByList,
   selectItemsByListId,
