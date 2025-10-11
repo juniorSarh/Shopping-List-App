@@ -107,19 +107,6 @@
       "notes": "werty",
       "purchased": false,
       "createdAt": 1760017273934
-    },
-    {
-      "id": "u7lyienz",
-      "listId": "axrimx5k",
-      "name": "grocery 102",
-      "quantity": 1,
-      "category": "Groceries",
-      "notes": "hjkuiytfghj",
-      "images": [
-        "https://img.freepik.com/free-vector/party-neon-sign_540545-36.jpg?semt=ais_hybrid&w=740&q=80"
-      ],
-      "purchased": false,
-      "createdAt": 1760084944722
     }
   ]
 }

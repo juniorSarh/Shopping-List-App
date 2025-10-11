@@ -49,6 +49,9 @@
   border-radius: 16px;
   box-shadow: var(--shadow-md);
   padding: 20px;
+  width: 70%;
+  margin: 30px;
+  margin-left: 30px;
 }
 
 .authTitle {
