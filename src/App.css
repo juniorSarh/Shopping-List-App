@@ -10,3 +10,17 @@ html, body, #root {
     background: #f3f4f6;
     color: #111827;
 }
+
+@media screen and (min-width: 300px) and (max-width: 1080px) {
+  html, body, #root {
+    width: 100%;
+    overflow-x: hidden;
+  }
+  img, video, svg, canvas {
+    max-width: 100%;
+    height: auto;
+  }
+  html {
+    font-size: 15px;
+  }
+}
