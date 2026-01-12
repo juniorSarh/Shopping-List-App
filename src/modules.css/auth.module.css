@@ -89,6 +89,8 @@
   outline: none;
   background: #fff;
   color: var(--text);
+  width: 100%;
+  box-sizing: border-box;
 }
 .input:focus {
   border-color: var(--accent);
@@ -105,6 +107,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  width: 100%;
 }
 
 .actions {
@@ -157,5 +160,13 @@
 
 /* Small screens */
 @media (max-width: 420px) {
-  .authCard { padding: 16px; }
+  .authCard { 
+    padding: 16px; 
+    margin: 16px;
+  }
+  
+  .grid2 {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
 }
