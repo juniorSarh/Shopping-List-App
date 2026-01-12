@@ -93,12 +93,12 @@ export default function ItemsOverlay() {
                 setParams(next, { replace: true });
               }}
             />
-            <button
+            {/* <button
               className={sheet.primaryBtn}
-              onClick={() => setShowAdd(true)}
+              onClick={() => setShowAdd(false)}
             >
               Add Item
-            </button>
+            </button> */}
             <button
               className={sheet.closeBtn}
               onClick={() => nav(-1)}

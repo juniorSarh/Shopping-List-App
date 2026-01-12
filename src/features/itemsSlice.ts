@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import type { ShoppingItem } from "../types/shopping";
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+const API_BASE = import.meta.env.VITE_API_URL ?? "https://shoppinglist-json-server.onrender.com";
 const nid = () => Math.random().toString(36).slice(2, 10);
 const asJson = async <T>(res: Response) => {
   if (!res.ok) throw new Error(await res.text());

@@ -39,6 +39,14 @@
       "surname": "Gumede",
       "cellNumber": "1234",
       "passwordHash": "$2b$12$eEoB.OSDVDtGt6NLXM69SeRgaOY9hG3i4osk4c7BVygnOsVgYMaC."
+    },
+    {
+      "id": "f6c2",
+      "email": "sa@gmail.com",
+      "name": "sa",
+      "surname": "sa",
+      "cellNumber": "123456",
+      "passwordHash": "$2b$12$RKdWg5DxdY3u5.JLEHvOm.ykhOk21C20PjdTk0IDqhxNRQiERoiJC"
     }
   ],
   "lists": [
@@ -82,6 +90,14 @@
       "createdAt": 1760084692492,
       "category": "Household",
       "notes": "qwert"
+    },
+    {
+      "id": "gfqj1lno",
+      "userId": "f6c2",
+      "title": "fdssghh",
+      "createdAt": 1768209819829,
+      "category": "Groceries",
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyMLyk8oxuLc3tNy7Td6DdY_L6h39Oy1ki9g&s"
     }
   ],
   "items": [
@@ -107,6 +123,28 @@
       "notes": "werty",
       "purchased": false,
       "createdAt": 1760017273934
+    },
+    {
+      "id": "34fhtr3f",
+      "listId": "gfqj1lno",
+      "name": "sgdgdfh",
+      "quantity": 2,
+      "category": "Household",
+      "notes": "hrtryhh",
+      "images": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyMLyk8oxuLc3tNy7Td6DdY_L6h39Oy1ki9g&s"
+      ],
+      "purchased": false,
+      "createdAt": 1768209836664
+    },
+    {
+      "id": "6vxnpxpd",
+      "listId": "gfqj1lno",
+      "name": "dtffhh",
+      "quantity": 1,
+      "category": "Electronics",
+      "purchased": false,
+      "createdAt": 1768209853034
     }
   ]
 }

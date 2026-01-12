@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import bcrypt from "bcryptjs";
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+const API_BASE = import.meta.env.VITE_API_URL ?? "https://shoppinglist-json-server.onrender.com";
 
 /** ===== Types ===== */
 export interface User {

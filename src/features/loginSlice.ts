@@ -27,7 +27,7 @@ export interface LoginState {
   token: string | null;
 }
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+const API_BASE = import.meta.env.VITE_API_URL ?? "https://shoppinglist-json-server.onrender.com";
 
 const LS_KEY = "session";
 function saveSession(u: User, token: string) {

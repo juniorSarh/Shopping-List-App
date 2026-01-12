@@ -43,7 +43,11 @@
   font-weight: 800;
   color: #334155;
 }
-.thSmall, .qtyTd { width: 120px; }
+.thSmall, .qtyTd { 
+  width: 120px;
+  text-align: center;
+  color: black;
+}
 
 .row:hover .td {
   background: var(--row-hover);
@@ -61,7 +65,8 @@
 .smallBtn {
   display: inline-flex;
   align-items: center;
-  padding: 8px 10px;
+  padding: 10px 10px;
+  margin: 10px 5px;
   border-radius: 10px;
   border: 1px solid var(--border);
   background: #fff;
