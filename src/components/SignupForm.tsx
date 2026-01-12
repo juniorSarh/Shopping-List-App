@@ -40,6 +40,7 @@ export default function RegisterForm() {
   return (
     <div className={styles.page}>
       <Navbar/>
+    <main className={styles.main}>
     <form onSubmit={onSubmit} className={styles.authCard}>
       <h2 className={styles.authTitle}>Create an Account</h2>
 
@@ -145,6 +146,7 @@ export default function RegisterForm() {
         </p>
       </div>
     </form>
+    </main>
     <Footer/>
     </div>
   );

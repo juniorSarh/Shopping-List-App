@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import type { ShoppingItem, ShoppingList } from "../types/shopping";
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+const API_BASE = import.meta.env.VITE_API_URL ?? "https://shoppinglist-json-server.onrender.com";
 
 export default function Share() {
   const { listId } = useParams();

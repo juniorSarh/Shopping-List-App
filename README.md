@@ -1,301 +1,355 @@
-<img src="https://socialify.git.ci/juniorSarh/Shopping-List-App/image?language=1&owner=1&name=1&stargazers=1&theme=Light" alt="Shopping-List-App" width="640" height="320" />
+<div align="center">
 
-Shopping Lists — React + Redux + JSON Server
+![Shopping List App Banner](https://socialify.git.ci/juniorSarh/Shopping-List-App/image?language=1&owner=1&name=1&stargazers=1&theme=Light)
 
-A responsive shopping list app with authentication, protected routes, profile management, list + item CRUD, shareable lists, and URL-driven search/sort. Built with React, TypeScript, Redux Toolkit, React Router v6, Vite, and json-server.
+# 🛒 Shopping List App
 
-✨ Features
+*A modern, responsive shopping list management application built with React, TypeScript, and Redux Toolkit*
 
-Auth (Register + Login)
+[![React](https://img.shields.io/badge/React-19.1.1-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg)](https://www.typescriptlang.org/)
+[![Redux Toolkit](https://img.shields.io/badge/Redux%20Toolkit-2.9.0-purple.svg)](https://redux-toolkit.js.org/)
+[![Vite](https://img.shields.io/badge/Vite-7.1.12-646CFF.svg)](https://vitejs.dev/)
 
-Register with email, password, name, surname, cell number
+</div>
 
-Passwords hashed on signup and verified on login (bcryptjs)
+## 📋 Table of Contents
 
-Protected routes: guests see Home/Login/SignUp, authed users see Dashboard/Profile
+- [✨ Features](#-features)
+- [🚀 Quick Start](#-quick-start)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [📁 Project Structure](#-project-structure)
+- [🔧 Configuration](#-configuration)
+- [📚 API Documentation](#-api-documentation)
+- [🧭 Routing](#-routing)
+- [🎨 UI Components](#-ui-components)
+- [🔐 Authentication](#-authentication)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
-Profile
+---
 
-View & edit profile, update credentials
+## ✨ Features
 
-Shopping Lists
+### 🔐 Authentication System
+- **User Registration**: Sign up with email, password, name, surname, and cell number
+- **Secure Login**: Password hashing using bcryptjs for security
+- **Protected Routes**: Role-based access control for authenticated and guest users
+- **Session Management**: Persistent authentication state across page refreshes
 
-Create multiple lists (title, optional category/image/notes stored with the list)
+### 📝 Shopping List Management
+- **Create Lists**: Multiple shopping lists with customizable titles, categories, images, and notes
+- **Responsive Grid Layout**: Adaptive design (1 column mobile → 2 columns tablet → 4 columns desktop)
+- **List Cards**: Rich metadata display including item counts and notes
+- **Share Functionality**: Web Share API with clipboard fallback for easy sharing
 
-Responsive card grid: 1 column (mobile) → 2 (tablet) → 4 (desktop)
+### 🛍️ Item Management
+- **CRUD Operations**: Complete create, read, update, delete functionality for items
+- **Rich Item Data**: Name, quantity, category, notes, and image support
+- **Search & Filter**: URL-driven search functionality for finding items quickly
+- **Sorting**: Extensible sorting system (name, category, date)
 
-Card shows meta (counts, notes), does not hide itself; only items are hidden
+### 🎯 User Experience
+- **Modern UI**: Clean, intuitive interface with smooth transitions
+- **Loading States**: Visual feedback during data operations
+- **Error Handling**: Comprehensive error messages and fallbacks
+- **Mobile Responsive**: Optimized for all device sizes
 
-“View Items” opens a full-page/overlay items view
+---
 
-Share a list (Web Share API with clipboard fallback)
+## 🚀 Quick Start
 
-Items
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn package manager
 
-Add, edit, delete items with name, quantity, category, notes, images
+### Installation
 
-Toggle purchased state (if included in your slice)
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/juniorSarh/Shopping-List-App.git
+   cd Shopping-List-App
+   ```
 
-URL search for items by name: ?q=milk
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-(Hooks for sorting via URL ready; see URL Contract below)
+3. **Environment Setup**
+   
+   Create a `.env` file in the project root:
+   ```env
+   VITE_API_URL=https://shoppinglist-json-server.onrender.com
+   ```
 
-State Management
+4. **Database Setup**
+   
+   Create a `db.json` file in the project root:
+   ```json
+   {
+     "users": [],
+     "lists": [],
+     "items": []
+   }
+   ```
 
-Two slices: shoppingLists and items (clean separation)
+5. **Start Development Server**
+   ```bash
+   # Start the backend (optional, uses render.com by default)
+   npx json-server --watch db.json --port 3000 --delay 400
+   
+   # Start the frontend
+   npm run dev
+   ```
 
-Persistence
+6. **Open your browser**
+   
+   Navigate to `http://localhost:5173` (or the URL shown in your terminal)
 
-json-server backend for users, lists, items
-
-🧱 Project Structure (key parts)
-src/
-  features/
-    auth/
-      loginSlice.ts            # login + (optionally registration) thunks/selectors
-    lists/
-      shoppingListsSlice.ts    # list CRUD + selectors
-    items/
-      itemsSlice.ts            # item CRUD + selectors
-    registerSlice.ts           # (optional) separate register slice if you use it
-  modules.css/
-      shoppinglist.module.css
-      shoppinglistdetails.module.css
-      itemsOverlay.module.css
-      itemsTable.module.css
-  pages/
-    Home.tsx
-    LogIn.tsx
-    SignUp.tsx
-    Dashboard.tsx              # lists grid, nested routes
-    Profile.tsx
-    ItemsOverlay.tsx           # full-page/overlay items table with search
-  components/
-    ShoppinglistDetails.tsx    # a single list "card" UI with modals
-  routes/
-    ProtectedRoute.tsx
-  store.ts
-  App.tsx
-
-
-Note: Use the features/lists/shoppingListsSlice.ts + features/items/itemsSlice.ts paths consistently. Remove older files like shoppinglistSlice.ts (singular) to avoid import mismatches.
-
-🔌 API & Data (json-server)
-
-Create a db.json in project root:
-
-{
-  "users": [],
-  "lists": [],
-  "items": []
-}
-
-
-Typical records:
-
-// users
-{
-  "id": "uuid-or-number",
-  "email": "alice@example.com",
-  "passwordHash": "$2a$10$...",
-  "name": "Alice",
-  "surname": "Smith",
-  "cellNumber": "0123456789"
-}
-
-// lists
-{
-  "id": "list-1",
-  "userId": "uuid-of-user",
-  "title": "Groceries",
-  "category": "Groceries",
-  "imageUrl": "https://...",
-  "notes": "Saturday shop",
-  "createdAt": 1728600000000
-}
-
-// items
-{
-  "id": "item-1",
-  "listId": "list-1",
-  "name": "Milk",
-  "quantity": 2,
-  "category": "Dairy",
-  "notes": "",
-  "images": ["https://..."],
-  "createdAt": 1728601000000
-}
-
-
-Endpoints (json-server):
-
-GET /users?email=alice@example.com
-
-POST /users
-
-GET /lists?userId=<uid>
-
-POST /lists, PATCH /lists/:id, DELETE /lists/:id
-
-GET /items?listId=<listId>
-
-POST /items, PATCH /items/:id, DELETE /items/:id
-
-⚙️ Setup
-1) Install dependencies
-npm i
-
-2) Environment
-
-Create .env (or .env.local) in project root:
-
-VITE_API_URL=http://localhost:3000
-
-3) Start json-server
-npx json-server --watch db.json --port 3000 --delay 400
-
-
-The delay is optional, but helps you see loading states.
-
-4) Start the app
-npm run dev
-
-
-Vite dev server prints the local URL (usually http://localhost:5173).
-
-Open in the browser.
-
-5) Build (optional)
+### Build for Production
+```bash
 npm run build
 npm run preview
+```
 
-🔐 Authentication Overview
+---
 
-Registration: hashes password with bcryptjs before saving to /users as passwordHash.
+## 🛠️ Tech Stack
 
-Login: fetch user by email, compare typed password with passwordHash using bcryptjs.compare.
+### Frontend
+- **React 19.1.1** - UI library with modern hooks and concurrent features
+- **TypeScript 5.8** - Type-safe JavaScript development
+- **Redux Toolkit 2.9.0** - State management with Redux patterns
+- **React Router 7.9.3** - Client-side routing with nested routes
+- **Vite 7.1.12** - Fast build tool and development server
+- **React Icons 5.5.0** - Icon library for UI components
+- **Axios 1.12.2** - HTTP client for API requests
 
-Protected routes:
+### Backend & Security
+- **JSON Server** - REST API with database persistence
+- **bcryptjs 3.0.2** - Password hashing for authentication
 
-GuestRoute: redirects authed users away from /, /login, /signup to /dashboard
+### Development Tools
+- **ESLint** - Code linting and formatting
+- **TypeScript Compiler** - Type checking and compilation
 
-PrivateRoute: redirects unauthenticated users to /login
+---
 
-This is a client-side demo. Do not use json-server + client hashing in production.
+## 📁 Project Structure
 
-🧭 Routing
-// App.tsx (simplified)
-<Routes>
-  <Route element={<GuestRoute />}>
-    <Route path="/" element={<Home />} />
-    <Route path="/login" element={<LogIn />} />
-    <Route path="/signup" element={<SignUp />} />
-  </Route>
+```
+src/
+├── components/           # Reusable UI components
+│   ├── LoginForm.tsx    # Login form component
+│   ├── SignupForm.tsx   # Registration form component
+│   ├── Header.tsx       # Application header
+│   ├── Footer.tsx       # Application footer
+│   └── ...
+├── features/            # Redux Toolkit feature slices
+│   ├── auth/
+│   │   ├── loginSlice.ts      # Login state and actions
+│   │   └── registerSlice.ts   # Registration state and actions
+│   ├── lists/
+│   │   └── shoppingListsSlice.ts  # Shopping list CRUD
+│   └── items/
+│       └── itemsSlice.ts     # Item CRUD operations
+├── modules.css/         # CSS Modules for component styling
+│   ├── auth.module.css       # Authentication form styles
+│   ├── shoppinglist.module.css
+│   └── ...
+├── pages/               # Page components
+│   ├── Home.tsx         # Landing page
+│   ├── Login.tsx        # Login page
+│   ├── SignUp.tsx       # Registration page
+│   ├── Dashboard.tsx    # Main dashboard
+│   ├── Profile.tsx      # User profile
+│   └── Share.tsx        # Shared list view
+├── types/               # TypeScript type definitions
+│   └── shopping.ts      # Shopping-related types
+├── routes/              # Route protection components
+│   └── ProtectedRoute.tsx
+├── App.tsx              # Main application component
+└── store.ts             # Redux store configuration
+```
 
-  <Route element={<PrivateRoute />}>
-    <Route path="/dashboard" element={<Dashboard />}>
-      <Route path="lists/:listId/items" element={<ItemsOverlay />} />
-      {/* so /dashboard/lists/:id/items shows overlay */}
-    </Route>
-    <Route path="/profile" element={<Profile />} />
-  </Route>
+---
 
-  <Route path="*" element={<Home />} />
-</Routes>
+## 🔧 Configuration
 
+### Environment Variables
+- `VITE_API_URL`: Backend API endpoint (defaults to render.com deployment)
 
-Dashboard shows list cards in a responsive grid.
+### Available Scripts
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
 
-Each card’s “view Items” link goes to lists/:id/items (relative), which renders ItemsOverlay inside the dashboard and visually hides other dashboard content.
+---
 
-Profile is accessible at /profile (and you can add /dashboard/profile as an alias if desired).
+## 📚 API Documentation
 
-🔍 URL Contract (search/sort)
+### Base URL
+```
+https://shoppinglist-json-server.onrender.com
+```
 
-ItemsOverlay reads query params:
+### Endpoints
 
-q — search term (by item name), e.g.
-/dashboard/lists/abc/items?q=milk
+#### Users
+- `GET /users?email=:email` - Find user by email
+- `POST /users` - Create new user
 
-Sorting (optional; scaffold present for extension):
+#### Shopping Lists
+- `GET /lists?userId=:userId` - Get user's shopping lists
+- `POST /lists` - Create new shopping list
+- `PATCH /lists/:id` - Update shopping list
+- `DELETE /lists/:id` - Delete shopping list
 
-sort — name | category | date
+#### Items
+- `GET /items?listId=:listId` - Get items for a list
+- `POST /items` - Create new item
+- `PATCH /items/:id` - Update item
+- `DELETE /items/:id` - Delete item
 
-order — asc | desc
+### Data Models
 
-Example:
-/dashboard/lists/abc/items?sort=name&order=asc
+#### User
+```typescript
+{
+  id: string;
+  email: string;
+  passwordHash: string;
+  name: string;
+  surname: string;
+  cellNumber: string;
+}
+```
 
-You can wire sort + order into the memo that currently filters by q.
+#### Shopping List
+```typescript
+{
+  id: string;
+  userId: string;
+  title: string;
+  category?: string;
+  imageUrl?: string;
+  notes?: string;
+  createdAt: number;
+}
+```
 
-🧩 Slices & Selectors
-Lists (features/lists/shoppingListsSlice.ts)
+#### Item
+```typescript
+{
+  id: string;
+  listId: string;
+  name: string;
+  quantity: number;
+  category?: string;
+  notes?: string;
+  images?: string[];
+  createdAt: number;
+}
+```
 
-fetchShoppingListsByUser(userId)
+---
 
-createShoppingList({ userId, title, ...optionalMeta })
+## 🧭 Routing
 
-updateShoppingList({ listId, changes })
+The application uses React Router with protected routes:
 
-deleteShoppingList(listId)
+### Public Routes
+- `/` - Home/Landing page
+- `/login` - User login
+- `/signup` - User registration
 
-Selectors:
+### Protected Routes (Authentication Required)
+- `/dashboard` - Main dashboard with shopping lists
+- `/dashboard/lists/:listId/items` - Items view for a specific list
+- `/profile` - User profile management
 
-selectShoppingListsByUser(userId)
+### Special Routes
+- `/share/:listId` - Public view of shared shopping list
 
-selectShoppingListById(id)
+---
 
-selectListsStatus, selectListsError
+## 🎨 UI Components
 
-Items (features/items/itemsSlice.ts)
+### Authentication Forms
+- Centered, responsive design
+- Form validation and error handling
+- Loading states during submission
+- Password strength indicators
 
-fetchItemsByList({ listId })
+### Dashboard
+- Responsive grid layout for shopping lists
+- Card-based UI with hover effects
+- Quick actions for list management
+- Search and filter capabilities
 
-addItemToList({ listId, name, quantity, category?, notes?, images? })
+### Item Management
+- Table view with sorting capabilities
+- Modal forms for adding/editing items
+- Bulk operations support
+- Image upload and preview
 
-updateListItem({ listId, itemId, changes })
+---
 
-deleteListItem({ listId, itemId })
+## 🔐 Authentication
 
-Selectors:
+### Security Features
+- **Password Hashing**: Using bcryptjs for secure password storage
+- **Protected Routes**: Server-side and client-side route protection
+- **Session Management**: Persistent authentication state
+- **Input Validation**: Client-side and server-side validation
 
-selectItemsByListId(listId)
+### Authentication Flow
+1. **Registration**: User creates account with hashed password
+2. **Login**: Credentials validated against stored hash
+3. **Session**: Authentication token stored in Redux state
+4. **Authorization**: Protected routes check authentication status
 
-selectItemsStatus, selectItemsError
+---
 
-Auth (features/auth/loginSlice.ts)
+## 🤝 Contributing
 
-registerUser({ email, password, name, surname, phone }) (or use a separate registerSlice if you prefer)
+We welcome contributions! Please follow these steps:
 
-loginUser({ email, password }), logout(), hydrate(user)
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Selectors: selectCurrentUser, selectAuthStatus, selectAuthError
+### Development Guidelines
+- Follow TypeScript best practices
+- Use ESLint for code quality
+- Write meaningful commit messages
+- Test your changes thoroughly
 
-If you keep a separate features/registerSlice.ts, add it to the store and use its own selectors. Otherwise, put registration into loginSlice and remove the separate slice.
+---
 
-🧰 Store
-// src/store.ts
-export const store = configureStore({
-  reducer: {
-    login: loginReducer,
-    shoppingLists: shoppingListsReducer,
-    items: itemsReducer,
-    // register: registerReducer, // only if you keep a separate register slice
-  },
-});
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+## 📄 License
 
-🎨 UI & Styling
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Cards grid: add cardGrid to the <ul> that wraps cards:
+---
 
-<ul className={`${styles.list} ${styles.cardGrid}`}>
-  <li className={styles.card}><ShoppingListDetail listId={...} /></li>
-  ...
-</ul>
+## 🙏 Acknowledgments
 
+- React team for the amazing framework
+- Redux Toolkit team for state management solutions
+- Vite team for the fast development experience
+- JSON Server for providing a simple backend solution
 
-Modals: both “Add List” and “Add Item” are centered pop-ups with a semi-transparent overlay.
+---
 
-ItemsOverlay: Displays a table of items and a topbar with search, Add, Close.
+<div align="center">
+
+**Built with ❤️ by [Junior Sarh](https://github.com/juniorSarh)**
+
+[⭐ Star this repo](https://github.com/juniorSarh/Shopping-List-App) | [🐛 Report Issues](https://github.com/juniorSarh/Shopping-List-App/issues) | [💡 Feature Requests](https://github.com/juniorSarh/Shopping-List-App/issues/new)
+
+</div>

@@ -36,6 +36,7 @@ export default function LoginForm() {
   return (
     <div className={styles.page}>
     <Header/>
+    <main className={styles.main}>
       <form onSubmit={onSubmit} className={styles.authCard}>
         <h2 className={styles.authTitle}>Login</h2>
         <p className={styles.authSubtitle}>Welcome back 👋</p>
@@ -85,6 +86,7 @@ export default function LoginForm() {
           {error && <p className={styles.error}>{error}</p>}
         </div>
       </form>
+    </main>
       <Footer />
     </div>
   );
