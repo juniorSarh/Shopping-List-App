@@ -1,0 +1,28 @@
+<svg width="400" height="200" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="200" fill="#fafafa"/>
+  
+  <!-- Secure Feature -->
+  <g transform="translate(50, 50)">
+    <circle cx="40" cy="40" r="35" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <path d="M40 25 L40 35 L50 40 L40 45 L30 40 L40 35" fill="#3b82f6"/>
+    <rect x="30" y="45" width="20" height="15" rx="2" fill="#3b82f6"/>
+    <text x="40" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Secure</text>
+  </g>
+  
+  <!-- Organized Feature -->
+  <g transform="translate(170, 50)">
+    <circle cx="40" cy="40" r="35" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+    <rect x="25" y="25" width="30" height="8" rx="2" fill="#10b981"/>
+    <rect x="25" y="35" width="30" height="8" rx="2" fill="#10b981"/>
+    <rect x="25" y="45" width="30" height="8" rx="2" fill="#10b981"/>
+    <text x="40" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Organized</text>
+  </g>
+  
+  <!-- Fast Feature -->
+  <g transform="translate(290, 50)">
+    <circle cx="40" cy="40" r="35" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <path d="M40 25 L40 55 M25 40 L55 40" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="40" cy="40" r="8" fill="#f59e0b"/>
+    <text x="40" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Fast</text>
+  </g>
+</svg>

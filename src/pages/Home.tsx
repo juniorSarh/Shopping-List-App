@@ -1,6 +1,7 @@
 import styles from "../modules.css/home.module.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import shoppingListImage from "../assets/shoppingList.jpg";
 
 export default function Home() {
   return (
@@ -11,14 +12,16 @@ export default function Home() {
         <div className={styles.container}>
           <section className={styles.hero}>
             <div>
-              <h1 className={styles.title}>Your shopping, simplified.</h1>
+              <h1 className={styles.title}>
+                Your shopping, <span className={styles.highlight}>simplified</span>.
+              </h1>
               <p className={styles.subtitle}>
-                Create lists, add items, share with family and keep everything
-                in sync.
+                Create smart shopping lists, organize items by categories, share with family, 
+                and keep everything in sync across all your devices. Never forget an item again!
               </p>
               <div className={styles.ctaRow}>
                 <a className={styles.primaryBtn} href="/signup">
-                  Get started
+                  Get started free
                 </a>
                 <a className={styles.ghostBtn} href="/login">
                   I already have an account
@@ -27,29 +30,35 @@ export default function Home() {
 
               <div className={styles.featureGrid}>
                 <div className={styles.featureCard}>
-                  <h3 className={styles.featureTitle}>Secure</h3>
+                  <div className={styles.featureIcon}>🔒</div>
+                  <h3 className={styles.featureTitle}>Secure & Private</h3>
                   <p className={styles.featureText}>
-                    Encrypted credentials, protected routes.
+                    Your data is encrypted and protected. Only you control who sees your lists.
                   </p>
                 </div>
                 <div className={styles.featureCard}>
-                  <h3 className={styles.featureTitle}>Organised</h3>
+                  <div className={styles.featureIcon}>📋</div>
+                  <h3 className={styles.featureTitle}>Smart Organization</h3>
                   <p className={styles.featureText}>
-                    Categories, notes, images & sorting.
+                    Categories, notes, images, and smart sorting make shopping effortless.
                   </p>
                 </div>
                 <div className={styles.featureCard}>
-                  <h3 className={styles.featureTitle}>Fast</h3>
+                  <div className={styles.featureIcon}>⚡</div>
+                  <h3 className={styles.featureTitle}>Lightning Fast</h3>
                   <p className={styles.featureText}>
-                    Redux Toolkit + JSON Server.
+                    Built with modern tech for instant updates and smooth performance.
                   </p>
                 </div>
               </div>
             </div>
 
             <div className={styles.heroMedia}>
-              {/* optional illustration */}
-              {/* <img className={styles.heroImage} src="/hero.png" alt="" /> */}
+              <img 
+                className={styles.heroImage} 
+                src={shoppingListImage} 
+                alt="Shopping list app with cart and checklist" 
+              />
             </div>
           </section>
         </div>

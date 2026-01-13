@@ -65,6 +65,13 @@
   color: var(--text);
 }
 
+.highlight {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .subtitle {
   margin: 0 0 16px;
   font-size: clamp(1rem, 1.6vw, 1.125rem);
@@ -119,6 +126,12 @@
   border-radius: 14px;
   box-shadow: var(--shadow-sm);
   padding: 14px;
+  text-align: center;
+}
+
+.featureIcon {
+  font-size: 2rem;
+  margin-bottom: 8px;
 }
 .featureTitle {
   margin: 0 0 4px;
