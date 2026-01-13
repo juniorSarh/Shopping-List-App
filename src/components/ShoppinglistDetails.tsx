@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../store";
 import { Link } from "react-router-dom";
 import styles from "../modules.css/shoppinglistdetails.module.css";
+import { refreshAfterDelete } from "../utils/refreshUtils";
 
 import {
   selectShoppingListById,
@@ -134,9 +135,12 @@ export default function ShoppingListDetail({ listId }: Props) {
                 borderColor: "#f5f1f1ff",
               }}
               onClick={() => {
-                if (confirm(`Delete “${list.title}”?`)) {
-                  dispatch(deleteShoppingList(list.id));
-                }
+                refreshAfterDelete(
+                  async () => {
+                    await dispatch(deleteShoppingList(list.id));
+                  },
+                  `Delete "${list.title}"? This action cannot be undone.`
+                );
               }}
             >
               Delete
