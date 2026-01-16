@@ -13,6 +13,7 @@ import {
 } from "../features/itemsSlice";
 import sheet from "../modules.css/itemsOverlay.module.css";
 import table from "../modules.css/itemsTable.module.css";
+import { refreshAfterDelete } from "../utils/refreshUtils";
 
 export default function ItemsOverlay() {
   const { listId = "" } = useParams();
@@ -147,7 +148,12 @@ export default function ItemsOverlay() {
                     <button
                       className={`${table.smallBtn} ${table.danger}`}
                       onClick={() =>
-                        dispatch(deleteListItem({ listId: id, itemId: it.id }))
+                        refreshAfterDelete(
+                          async () => {
+                            await dispatch(deleteListItem({ listId: id, itemId: it.id }));
+                          },
+                          `Delete "${it.name}"? This action cannot be undone.`
+                        )
                       }
                     >
                       Delete
