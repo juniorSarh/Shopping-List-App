@@ -11,8 +11,8 @@ import {
 } from "../features/loginSlice";
 import type { AppDispatch } from "../store";
 import styles from "../modules.css/auth.module.css";
-import Header from "./Header";
 import Footer from "./Footer";
+import Navbar from "./NavBar";
 
 export default function LoginForm() {
   const dispatch = useDispatch<AppDispatch>();
@@ -35,7 +35,7 @@ export default function LoginForm() {
 
   return (
     <div className={styles.page}>
-    <Header/>
+    <Navbar/>
     <main className={styles.main}>
       <form onSubmit={onSubmit} className={styles.authCard}>
         <h2 className={styles.authTitle}>Login</h2>

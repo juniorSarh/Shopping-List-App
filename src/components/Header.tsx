@@ -13,7 +13,7 @@ export default function Header({ appName = "ShopEase" }: HeaderProps) {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/login", { replace: true });
+    navigate("/", { replace: true });
   };
 
   return (
@@ -29,7 +29,7 @@ export default function Header({ appName = "ShopEase" }: HeaderProps) {
             isActive ? styles.linkActive : styles.link
           }
         >
-          Home
+          Dashboard
         </NavLink>
 
         {user ? (

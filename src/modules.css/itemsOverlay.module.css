@@ -28,3 +28,61 @@
   background:#0b1220; color:#e5e7eb; cursor:pointer; font-weight:600;
 }
 .closeBtn:hover { background:#111827; }
+
+/* Modal styles for ItemModal */
+.modalOverlay {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(0,0,0,.44);
+  display: grid; place-items: center;
+}
+.modalCard {
+  width: min(520px, 92vw);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.12);
+}
+.modalTitle {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+.modalLabel {
+  display: block;
+  font-size: 0.9rem; color: #334155; font-weight: 600;
+  margin-bottom: 4px;
+}
+.modalInput {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+.modalInput:focus {
+  outline: none;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 2px rgba(147, 197, 253, 0.15);
+}
+.modalActions {
+  display: flex; gap: 10px; justify-content: flex-end; margin-top: 12px;
+}
+.primaryBtn {
+  padding: 8px 16px;
+  background: #1f275e;
+  color: white;
+  border: 1px solid #1f275e;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.primaryBtn:hover:not(:disabled) {
+  background: #1e293b;
+}
+.primaryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
