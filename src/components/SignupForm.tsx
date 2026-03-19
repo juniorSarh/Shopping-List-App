@@ -23,10 +23,9 @@ export default function RegisterForm() {
   const error = useSelector(selectRegisterError);
   const success = useSelector(selectRegisterSuccess);
 
-  
-
   const navigate = useNavigate();
-  const onSubmit = async (e: FormEvent) => {
+
+    const onSubmit = async (e: FormEvent) => {
       e.preventDefault();
       try {
         

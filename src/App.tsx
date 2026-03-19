@@ -25,7 +25,7 @@ export default function App() {
           </Route>
           <Route path="/profile" element={<Profile />} />
         </Route>
-
+      {/* error 404 page and redirect to home page */}
         <Route path="*" element={<Home />} />
       </Routes>
     </Suspense>
