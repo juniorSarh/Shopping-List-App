@@ -96,12 +96,12 @@ export default function ItemsOverlay() {
               }}
             />
 
-            {/* <button
+            <button
               className={sheet.primaryBtn}
               onClick={() => setShowAdd(true)}
             >
               Add Item
-            </button> */}
+            </button>
 
             <button className={sheet.closeBtn} onClick={() => nav(-1)}>
               Close
@@ -129,7 +129,6 @@ export default function ItemsOverlay() {
                   <td className={table.td}>{it.name}</td>
                   <td className={table.td}>{it.category ?? ""}</td>
                   <td className={table.td}>{it.notes ?? ""}</td>
-
                   <td className={table.td}>
                     <div style={{ display: "flex", gap: 6 }}>
                       {(it.images ?? []).map((img, i) => (
@@ -159,9 +158,7 @@ export default function ItemsOverlay() {
                           await dispatch(
                             deleteListItem({ listId: id, itemId: it.id })
                           );
-                          alert("You are about to delete this item.");
                         })
-                        
                       }
                     >
                       Delete
@@ -176,11 +173,9 @@ export default function ItemsOverlay() {
 
       {/* ADD */}
       {showAdd && (
-        <ItemModal
-          mode="add"
-          title="Add Item"
-          onClose={() => setShowAdd(false)}
-          onSubmit={async (data) => {
+        <AddItemModal
+          busy={false}
+          onCreate={async (data) => {
             await dispatch(
               addItemToList({
                 listId: id,
@@ -188,9 +183,9 @@ export default function ItemsOverlay() {
                 images: data.images ?? [],
               })
             ).unwrap();
-
             setShowAdd(false);
           }}
+          onCancel={() => setShowAdd(false)}
         />
       )}
 
@@ -207,7 +202,17 @@ export default function ItemsOverlay() {
             images: editImages,
           }}
           onClose={() => setEditId(null)}
-          onSubmit={async ({ name, category, notes, quantity }) => {
+          onSubmit={async ({
+            name,
+            category,
+            notes,
+            quantity,
+          }: {
+            name: string;
+            category: string;
+            notes: string;
+            quantity: number;
+          }) => {
             await dispatch(
               updateListItem({
                 listId: id,
@@ -230,13 +235,17 @@ export default function ItemsOverlay() {
   );
 }
 
-/* MODAL */
-
+/* ITEM MODAL FOR EDIT ONLY */
 type ItemModalProps = {
-  mode: "add" | "edit";
+  mode: "edit";
   title: string;
   onClose: () => void;
-  onSubmit: (data: any) => void;
+  onSubmit: (data: {
+    name: string;
+    category: string;
+    notes: string;
+    quantity: number;
+  }) => void | Promise<void>;
   initial?: {
     name?: string;
     category?: string;
@@ -246,27 +255,11 @@ type ItemModalProps = {
   };
 };
 
-function ItemModal({ mode, title, onClose, onSubmit, initial }: ItemModalProps) {
+function ItemModal({ title, onClose, onSubmit, initial }: ItemModalProps) {
   const [name, setName] = useState(initial?.name ?? "");
   const [category, setCategory] = useState(initial?.category ?? "");
-  const [quantity, setQuantity] = useState(initial?.quantity ?? "");
   const [notes, setNotes] = useState(initial?.notes ?? "");
-  const [images, setImages] = useState<string[]>(initial?.images ?? []);
-
-  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-
-    Promise.all(
-      files.map(
-        (file) =>
-          new Promise<string>((res) => {
-            const reader = new FileReader();
-            reader.onload = () => res(reader.result as string);
-            reader.readAsDataURL(file);
-          })
-      )
-    ).then((imgs) => setImages((prev) => [...prev, ...imgs]));
-  };
+  const [quantity, setQuantity] = useState(initial?.quantity ?? "");
 
   const qtyNum = Math.max(1, Number(quantity));
   const valid = name.trim().length > 0 && qtyNum > 0;
@@ -297,30 +290,10 @@ function ItemModal({ mode, title, onClose, onSubmit, initial }: ItemModalProps) 
           onChange={(e) => setNotes(e.target.value)}
         />
 
-        {mode === "add" && (
-          <>
-            <label className={sheet.modalLabel}>Images</label>
-            <input
-              className={sheet.modalInput}
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleUpload}
-            />
-
-            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-              {images.map((img, i) => (
-                <img key={i} src={img} width={50} height={50} />
-              ))}
-            </div>
-          </>
-        )}
-
         <label className={sheet.modalLabel}>Quantity</label>
         <input
           className={sheet.modalInput}
           value={quantity}
-          inputMode="numeric"
           onChange={(e) =>
             setQuantity(e.target.value.replace(/[^\d]/g, ""))
           }
@@ -332,11 +305,10 @@ function ItemModal({ mode, title, onClose, onSubmit, initial }: ItemModalProps) 
             disabled={!valid}
             onClick={() =>
               onSubmit({
-                name: name.trim(),
+                name,
                 category,
                 notes,
                 quantity: qtyNum,
-                images,
               })
             }
           >
@@ -344,6 +316,105 @@ function ItemModal({ mode, title, onClose, onSubmit, initial }: ItemModalProps) 
           </button>
 
           <button className={sheet.closeBtn} onClick={onClose}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ADD ITEM MODAL */
+function AddItemModal({
+  busy,
+  onCreate,
+  onCancel,
+}: {
+  busy: boolean;
+  onCreate: (payload: {
+    name: string;
+    quantity: number;
+    category?: string;
+    notes?: string;
+    images?: string[];
+  }) => void | Promise<void>;
+  onCancel: () => void;
+}) {
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [notes, setNotes] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [quantity, setQuantity] = useState<string>("");
+
+  const qty = Number.parseInt(quantity || "0", 10);
+  const valid = name.trim().length > 0 && qty > 0;
+
+  const submit = () => {
+    if (!valid) return;
+    const images = imageUrl.trim() ? [imageUrl.trim()] : [];
+    onCreate({
+      name: name.trim(),
+      quantity: qty,
+      category: category || undefined,
+      notes: notes || undefined,
+      images,
+    });
+  };
+
+  return (
+    <div className={sheet.modalOverlay}>
+      <div className={sheet.modalCard}>
+        <h3 className={sheet.modalTitle}>Add Item</h3>
+
+        <label className={sheet.modalLabel}>Name</label>
+        <input
+          className={sheet.modalInput}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          autoFocus
+        />
+
+        <label className={sheet.modalLabel}>Category</label>
+        <input
+          className={sheet.modalInput}
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        />
+
+        <label className={sheet.modalLabel}>Notes</label>
+        <input
+          className={sheet.modalInput}
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+        />
+
+        <label className={sheet.modalLabel}>Image URL</label>
+        <input
+          className={sheet.modalInput}
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
+          placeholder="Optional image URL"
+        />
+
+        <label className={sheet.modalLabel}>Quantity</label>
+        <input
+          className={sheet.modalInput}
+          value={quantity}
+          onChange={(e) =>
+            setQuantity(e.target.value.replace(/[^\d]/g, ""))
+          }
+        />
+
+        <div className={sheet.modalActions}>
+          <button
+            className={sheet.primaryBtn}
+            disabled={!valid || busy}
+            onClick={submit}
+          >
+            {busy ? "Saving…" : "Create"}
+          </button>
+
+          <button className={sheet.closeBtn} onClick={onCancel}>
             Cancel
           </button>
         </div>

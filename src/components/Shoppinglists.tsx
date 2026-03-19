@@ -71,9 +71,9 @@ export default function ShoppingLists({ userId }: Props) {
           categories={CATEGORIES}
           busy={status === "loading"}
           onCancel={() => setShowAddList(false)}
-          onCreate={async ({ title, category, imageUrl, notes }) => {
+          onCreate={async ({ title, category, imageUrl }) => {
             await dispatch(
-              createShoppingList({ userId, title, category, imageUrl, notes })
+              createShoppingList({ userId, title, category, imageUrl })
             );
             setShowAddList(false);
           }}

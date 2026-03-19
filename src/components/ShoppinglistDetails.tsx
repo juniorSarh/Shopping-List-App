@@ -189,9 +189,9 @@ export default function ShoppingListDetail({ listId }: Props) {
               <strong>items :</strong> {totalItems} &nbsp;&nbsp;{" "}
               <strong>Quantity :</strong> {totalQty}
             </div>
-            <div style={{ marginTop: 4 }}>
+            {/* <div style={{ marginTop: 4 }}>
               <strong>Notes:</strong> {list.notes?.trim() || "—"}
-            </div>
+            </div> */}
           </div>
 
           <div style={{ display: "flex", gap: 12 }}>
@@ -350,7 +350,7 @@ function MetaModal({
               color: "#fff",
               borderColor: "#166534",
             }}
-            onClick={() => onSave({ title, category, imageUrl, notes })}
+            onClick={() => onSave({ title,category, imageUrl, notes })}
           >
             Save
           </button>
@@ -372,7 +372,7 @@ function MetaModal({
 }
 
 function AddItemModal({
-  categories,
+  // categories,
   busy,
   onCreate,
   onCancel,
@@ -389,7 +389,7 @@ function AddItemModal({
   onCancel: () => void;
 }) {
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
+  // const [category, setCategory] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [notes, setNotes] = useState("");
   const [quantity, setQuantity] = useState<string>("");
@@ -403,7 +403,7 @@ function AddItemModal({
     onCreate({
       name: name.trim(),
       quantity: qty,
-      category: category || undefined,
+      // category: category || undefined,
       notes: notes || undefined,
       images,
     });
@@ -425,7 +425,7 @@ function AddItemModal({
           />
         </div>
 
-        <div className={styles.formRow}>
+        {/* <div className={styles.formRow}>
           <label className={styles.label}>Category</label>
           <select
             className={styles.select ?? styles.input}
@@ -439,7 +439,7 @@ function AddItemModal({
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
 
         <div className={styles.formRow}>
           <label className={styles.label}>Image</label>
