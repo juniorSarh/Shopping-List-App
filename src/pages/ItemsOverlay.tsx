@@ -30,7 +30,6 @@ export default function ItemsOverlay() {
 
   const [editId, setEditId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
-  const [editCat, setEditCat] = useState("");
   const [editQty, setEditQty] = useState<string>("");
   const [editNotes, setEditNotes] = useState("");
   const [editImages, setEditImages] = useState<string[]>([]);
@@ -61,7 +60,6 @@ export default function ItemsOverlay() {
 
     setEditId(rowId);
     setEditName(it.name);
-    setEditCat(it.category ?? "");
     setEditQty(String(it.quantity));
     setEditNotes(it.notes ?? "");
     setEditImages(it.images ?? []);
@@ -114,7 +112,6 @@ export default function ItemsOverlay() {
             <thead>
               <tr>
                 <th className={table.th}>Name</th>
-                <th className={table.th}>Category</th>
                 <th className={table.th}>Notes</th>
                 <th className={table.th}>Images</th>
                 <th className={table.th}>Date Added</th>
@@ -127,7 +124,6 @@ export default function ItemsOverlay() {
               {filtered.map((it) => (
                 <tr key={it.id} className={table.row}>
                   <td className={table.td}>{it.name}</td>
-                  <td className={table.td}>{it.category ?? ""}</td>
                   <td className={table.td}>{it.notes ?? ""}</td>
                   <td className={table.td}>
                     <div style={{ display: "flex", gap: 6 }}>
@@ -192,11 +188,9 @@ export default function ItemsOverlay() {
       {/* EDIT */}
       {editId && (
         <ItemModal
-          mode="edit"
           title="Edit Item"
           initial={{
             name: editName,
-            category: editCat,
             quantity: editQty,
             notes: editNotes,
             images: editImages,
@@ -204,12 +198,10 @@ export default function ItemsOverlay() {
           onClose={() => setEditId(null)}
           onSubmit={async ({
             name,
-            category,
             notes,
             quantity,
           }: {
             name: string;
-            category: string;
             notes: string;
             quantity: number;
           }) => {
@@ -219,7 +211,6 @@ export default function ItemsOverlay() {
                 itemId: editId,
                 changes: {
                   name,
-                  category,
                   notes,
                   quantity,
                   images: editImages,
@@ -237,18 +228,15 @@ export default function ItemsOverlay() {
 
 /* ITEM MODAL FOR EDIT ONLY */
 type ItemModalProps = {
-  mode: "edit";
   title: string;
   onClose: () => void;
   onSubmit: (data: {
     name: string;
-    category: string;
     notes: string;
     quantity: number;
   }) => void | Promise<void>;
   initial?: {
     name?: string;
-    category?: string;
     quantity?: string;
     notes?: string;
     images?: string[];
@@ -257,7 +245,6 @@ type ItemModalProps = {
 
 function ItemModal({ title, onClose, onSubmit, initial }: ItemModalProps) {
   const [name, setName] = useState(initial?.name ?? "");
-  const [category, setCategory] = useState(initial?.category ?? "");
   const [notes, setNotes] = useState(initial?.notes ?? "");
   const [quantity, setQuantity] = useState(initial?.quantity ?? "");
 
@@ -274,13 +261,6 @@ function ItemModal({ title, onClose, onSubmit, initial }: ItemModalProps) {
           className={sheet.modalInput}
           value={name}
           onChange={(e) => setName(e.target.value)}
-        />
-
-        <label className={sheet.modalLabel}>Category</label>
-        <input
-          className={sheet.modalInput}
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
         />
 
         <label className={sheet.modalLabel}>Notes</label>
@@ -306,7 +286,6 @@ function ItemModal({ title, onClose, onSubmit, initial }: ItemModalProps) {
             onClick={() =>
               onSubmit({
                 name,
-                category,
                 notes,
                 quantity: qtyNum,
               })
@@ -334,14 +313,12 @@ function AddItemModal({
   onCreate: (payload: {
     name: string;
     quantity: number;
-    category?: string;
     notes?: string;
     images?: string[];
   }) => void | Promise<void>;
   onCancel: () => void;
 }) {
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
   const [notes, setNotes] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [quantity, setQuantity] = useState<string>("");
@@ -355,7 +332,6 @@ function AddItemModal({
     onCreate({
       name: name.trim(),
       quantity: qty,
-      category: category || undefined,
       notes: notes || undefined,
       images,
     });
@@ -372,13 +348,6 @@ function AddItemModal({
           value={name}
           onChange={(e) => setName(e.target.value)}
           autoFocus
-        />
-
-        <label className={sheet.modalLabel}>Category</label>
-        <input
-          className={sheet.modalInput}
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
         />
 
         <label className={sheet.modalLabel}>Notes</label>
