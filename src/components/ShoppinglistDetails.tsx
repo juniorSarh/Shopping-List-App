@@ -260,7 +260,7 @@ export default function ShoppingListDetail({ listId }: Props) {
           busy={status === "loading"}
           onCancel={() => setShowAdd(false)}
           onCreate={async (payload) => {
-            await dispatch(addItemToList({ listId, ...payload })).unwrap();
+            await dispatch(addItemToList({listId, ...payload })).unwrap();
             setShowAdd(false);
           }}
         />

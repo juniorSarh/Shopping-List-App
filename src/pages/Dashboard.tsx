@@ -16,7 +16,10 @@ export default function Dashboard() {
         <div className={styles.container}>
           {/* If ShoppingLists exposes the card grid container, wrap or pass a class that uses styles.cardGrid */}
           <div className={styles.cardGrid}>
+            
             <ShoppingLists userId={String(user.id)} />
+            
+
           </div>
         </div>
       </main>
