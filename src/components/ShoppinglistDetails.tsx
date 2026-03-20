@@ -290,7 +290,7 @@ function MetaModal({
   const [title, setTitle] = useState(initial.title);
   const [category, setCategory] = useState(initial.category);
   const [imageUrl, setImageUrl] = useState(initial.imageUrl);
-  const [notes, setNotes] = useState(initial.notes);
+
 
   return (
     <div className={styles.modalOverlay} role="dialog" aria-modal="true">
@@ -332,15 +332,6 @@ function MetaModal({
           />
         </div>
 
-        <div className={styles.formRow}>
-          <label className={styles.label}>Notes</label>
-          <input
-            className={styles.input}
-            placeholder="(opt.) Description of list"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-          />
-        </div>
 
         <div className={styles.modalActions}>
           <button
@@ -350,7 +341,7 @@ function MetaModal({
               color: "#fff",
               borderColor: "#166534",
             }}
-            onClick={() => onSave({ title,category, imageUrl, notes })}
+            onClick={() => onSave({ title,category, imageUrl, notes: initial.notes })}
           >
             Save
           </button>
