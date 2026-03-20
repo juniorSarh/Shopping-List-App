@@ -96,14 +96,13 @@ function AddListModal({
     title: string;
     category?: string;
     imageUrl?: string;
-    notes?: string;
   }) => void | Promise<void>;
   onCancel: () => void;
 }) {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [notes, setNotes] = useState("");
+  
 
   const valid = title.trim().length > 0;
   const submit = () =>
@@ -112,7 +111,6 @@ function AddListModal({
       title: title.trim(),
       category: category || undefined,
       imageUrl: imageUrl || undefined,
-      notes: notes || undefined,
     });
 
   return (
@@ -154,15 +152,6 @@ function AddListModal({
             placeholder="url image"
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
-          />
-        </div>
-        <div className={styles.formRow}>
-          <label className={styles.label}>Notes</label>
-          <input
-            className={styles.input}
-            placeholder="(opt.) Description of list"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
           />
         </div>
 
